@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<section class="flex-1 flex flex-col items-center justify-center p-md relative overflow-hidden bg-background">
+<!-- Branding Anchor -->
+<div class="flex flex-col items-center mb-xl">
+<div class="w-12 h-12 bg-primary flex items-center justify-center rounded-xl mb-md">
+<span class="material-symbols-outlined text-white text-[28px]" data-icon="school">school</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary tracking-tight">Academia AI</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Faculty Portal • Secure Access</p>
+</div>
+<!-- Verification Card -->
+<div class="glass-card bg-surface-container-lowest border border-outline-variant p-lg md:p-xl rounded-xl shadow-sm ai-glow">
+<div class="flex flex-col items-center text-center">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-secondary" data-icon="verified_user">verified_user</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface mb-sm">Verify Your Account</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mb-xl max-w-[320px]">
+                    Enter the 6-digit code sent to your email <span class="font-semibold text-on-surface">{{ email }}</span>
+</p>
+
+{% if messages %}
+<div class="mb-md w-full">
+    {% for message in messages %}
+    <div class="p-sm text-sm rounded-lg {% if message.tags == 'error' %}bg-error-container text-on-error-container{% else %}bg-green-100 text-green-800{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- OTP Inputs -->
+<form class="w-full" id="otp-form" method="POST">
+{% csrf_token %}
+<div class="flex justify-between gap-sm mb-xl" id="otp-container">
+<input name="otp" autocomplete="one-time-code" class="w-full text-center text-headline-md font-headline-md rounded-lg border border-outline-variant bg-white transition-all duration-200 py-md" maxlength="6" pattern="\d*" type="text" placeholder="------" required/>
+</div>
+<!-- Action Buttons -->
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-md rounded-lg hover:bg-primary-container transition-all active:scale-[0.98] mb-lg flex items-center justify-center gap-sm" type="submit">
+                        Verify &amp; Continue
+                        <span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+<form method="POST">
+{% csrf_token %}
+<div class="flex flex-col items-center gap-sm">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Didn't receive the code?</p>
+<button class="text-secondary font-label-md text-label-md hover:underline decoration-2 underline-offset-4 transition-all" name="resend" value="true" type="submit">
+                            Resend Code
+                        </button>
+</div>
+</form>
+</div>
+</div>
+<!-- Footer / Support Link -->
+<footer class="mt-xl text-center">
+<p class="mt-md font-label-sm text-label-sm text-outline">
+                © 2024 Institute of Computational Intelligence.
+            </p>
+</footer>
+</section>
+{% endblock %}

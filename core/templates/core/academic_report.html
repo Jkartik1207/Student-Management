@@ -1,0 +1,272 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<!-- Page Content -->
+<div class="flex-1 p-lg max-w-7xl mx-auto w-full space-y-xl">
+<!-- Selection Area (Hero) -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<div class="lg:col-span-2 bg-white p-lg rounded-xl border border-outline-variant shadow-sm flex flex-col gap-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Report Generator</h2>
+<p class="text-on-surface-variant font-body-md">Generate comprehensive academic reports enhanced by Gemini's behavioral insights.</p>
+</div>
+<form method="POST" class="flex flex-col sm:flex-row gap-md items-end w-full" onsubmit="showLoading()">
+{% csrf_token %}
+<div class="flex-1 w-full relative">
+<label class="block font-label-md text-label-md text-primary mb-xs">Select Student</label>
+<div class="flex items-center w-full px-md py-sm bg-surface-container-lowest border border-outline rounded-lg focus-within:border-secondary transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant mr-md">person_search</span>
+<select class="w-full bg-transparent border-none focus:ring-0 text-body-md appearance-none cursor-pointer" name="student_id" required>
+<option disabled="" {% if not selected_student %}selected{% endif %} value="">Search by name or ID...</option>
+{% for s in students %}
+<option value="{{ s.id }}" {% if selected_student.id == s.id %}selected{% endif %}>{{ s.name }} (ID: {{ s.roll_number }})</option>
+{% endfor %}
+</select>
+<span class="material-symbols-outlined text-on-surface-variant ml-sm">expand_more</span>
+</div>
+</div>
+<button type="submit" class="w-full sm:w-auto px-xl py-sm bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary/90 active:scale-95 transition-all flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined">magic_button</span>
+<span>Generate Final Report Card</span>
+</button>
+</form>
+</div>
+<div class="bg-primary-container p-lg rounded-xl text-white flex flex-col justify-between overflow-hidden relative">
+<div class="z-10">
+<h3 class="font-headline-sm text-headline-sm mb-sm flex items-center gap-xs">
+<span class="material-symbols-outlined">trending_up</span>
+                            Academic Trends
+                        </h3>
+<p class="text-on-primary-container font-body-sm mb-md">AI is identifying an overall 12% improvement in student engagement across your courses this semester.</p>
+<ul class="space-y-sm">
+<li class="flex items-center gap-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                Attendance up 4%
+                            </li>
+<li class="flex items-center gap-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                Assignment completion at 98%
+                            </li>
+</ul>
+</div>
+<div class="absolute bottom-[-20px] right-[-20px] opacity-10">
+<span class="material-symbols-outlined text-[120px]">school</span>
+</div>
+</div>
+</section>
+<!-- Report Card Canvas -->
+<section class="{% if not report %}hidden{% endif %} transform transition-all duration-700 ease-out" id="report-card-canvas">
+<div id="pdf-content" class="bg-white border border-outline-variant shadow-xl rounded-xl overflow-hidden max-w-4xl mx-auto printable-report">
+<!-- Report Header -->
+<div class="p-xl bg-surface-container-low border-b border-outline-variant flex justify-between items-start">
+<div class="flex gap-lg items-center">
+<div class="w-20 h-20 bg-primary flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-white text-4xl">school</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight">INSTITUTE OF COMPUTATIONAL INTELLIGENCE</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">OFFICIAL ACADEMIC TRANSCRIPT • SPRING SEMESTER 2024</p>
+</div>
+</div>
+<div class="text-right no-print flex gap-sm">
+<button type="button" class="p-sm bg-white border border-outline rounded-lg hover:bg-surface transition-colors flex items-center gap-sm" onclick="exportPDF()">
+<span class="material-symbols-outlined text-sm">download</span>
+<span class="font-label-sm text-label-sm">Export PDF</span>
+</button>
+<button type="button" class="p-sm bg-white border border-outline rounded-lg hover:bg-surface transition-colors flex items-center gap-sm" onclick="window.print()">
+<span class="material-symbols-outlined text-sm">print</span>
+<span class="font-label-sm text-label-sm">Print Report</span>
+</button>
+</div>
+</div>
+<!-- Student Info Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter p-xl border-b border-outline-variant bg-surface-bright">
+<div>
+<p class="font-label-sm text-label-sm text-outline mb-xs">STUDENT NAME</p>
+<p class="font-headline-sm text-headline-sm text-primary" id="rep-name">{{ selected_student.name }}</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline mb-xs">STUDENT ID</p>
+<p class="font-headline-sm text-headline-sm text-primary" id="rep-id">{{ selected_student.roll_number }}</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline mb-xs">GRADE LEVEL</p>
+<p class="font-headline-sm text-headline-sm text-primary">Senior / Year 4</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline mb-xs">BATCH</p>
+<p class="font-headline-sm text-headline-sm text-primary">{{ selected_student.batch }}</p>
+</div>
+</div>
+<!-- Grades Table -->
+<div class="p-xl">
+<h3 class="font-label-md text-label-md text-primary mb-md border-b-2 border-primary w-fit pb-1 uppercase tracking-widest">Performance Metrics</h3>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="py-md px-md font-label-md text-label-md text-on-surface-variant uppercase">Course Module</th>
+<th class="py-md px-md font-label-md text-label-md text-on-surface-variant uppercase text-center">Score</th>
+<th class="py-md px-md font-label-md text-label-md text-on-surface-variant uppercase text-center">Grade</th>
+<th class="py-md px-md font-label-md text-label-md text-on-surface-variant uppercase text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+{% for mark in marks_list %}
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="py-md px-md font-body-md font-medium text-primary">{{ mark.subject }}</td>
+<td class="py-md px-md text-center font-body-md">{{ mark.obtained }} / {{ mark.max }}</td>
+<td class="py-md px-md text-center font-bold text-secondary">{{ mark.grade }}</td>
+<td class="py-md px-md text-right"><span class="px-sm py-1 {{ mark.status_color }} text-[10px] font-bold rounded uppercase">{{ mark.status }}</span></td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="4" class="py-md px-md text-center text-on-surface-variant font-body-sm">No marks recorded yet.</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+<!-- Attendance & AI Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 border-t border-outline-variant">
+<!-- Attendance -->
+<div class="p-xl bg-surface-bright border-r border-outline-variant">
+<h3 class="font-label-md text-label-md text-primary mb-lg uppercase">Attendance Summary</h3>
+<div class="flex items-center justify-center py-md relative">
+<svg class="w-32 h-32 transform -rotate-90">
+<circle class="text-outline-variant" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-secondary transition-all duration-1000" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-dasharray="364.4" stroke-dashoffset="{{ attendance_offset|default:364.4 }}" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-bold text-primary">{{ attendance_percentage|default:0 }}%</span>
+<span class="text-[10px] text-outline uppercase font-bold">Present</span>
+</div>
+</div>
+<div class="mt-md space-y-sm">
+<div class="flex justify-between text-body-sm"><span>Total Days</span><span class="font-bold">{{ total_attendance|default:0 }}</span></div>
+<div class="flex justify-between text-body-sm"><span>Present</span><span class="font-bold text-secondary">{{ present_attendance|default:0 }}</span></div>
+<div class="flex justify-between text-body-sm"><span>Absent</span><span class="font-bold text-error">{{ absent_attendance|default:0 }}</span></div>
+</div>
+</div>
+<!-- Gemini Observation -->
+<div class="md:col-span-2 p-xl ai-glow">
+<div class="flex items-center justify-between mb-lg">
+<h3 class="font-label-md text-label-md text-secondary uppercase flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">spark</span>
+                                    Gemini Observation
+                                </h3>
+<span class="px-sm py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded">AI-GENERATED FEEDBACK</span>
+</div>
+<div class="font-body-md text-on-surface-variant leading-relaxed space-y-md italic">
+{{ report|safe }}
+</div>
+<div class="mt-xl flex items-center gap-md">
+<div class="w-12 h-12 bg-surface-container-high rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist logo of a university official, perhaps a dean's digital signature stamp or a stylized crest. The design is in deep navy blue on a crisp white background, embodying authority and academic tradition within a modern context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5nWZebIUB6-WqO9_1R3PJEDs3UW-WxCwTcT6eUmkLIKUfOabSqfEwFBRMmHVLK0ho_NzCF9h3J6Qwv5SFTYwWokXN7p92c1OJtCRzS0-1fMz3wd6QAL4IizIJ07dhBu4LgjuoQUnYmhkX8yabFUwbraqhGXMAH6hwzPzKaqZkw-tXeGan4qQWuMxgzNh47HOqjtbbeUZHUYIh-CkZ8yaGALXD5nHATkwl0epteD3oR5Q6cHJlv7w_SKgnt8GTTFSJBjrXO5W4SSfV"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary">Dr. Eleanor Sterling</p>
+<p class="text-[10px] text-outline uppercase font-bold">Head of Faculty • AI Research Division</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Tools -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
+<div class="bg-white p-md rounded-lg border border-outline-variant flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-blue-50 text-blue-600 flex items-center justify-center">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline">Recent Exports</p>
+<p class="font-body-sm font-semibold">12 Reports today</p>
+</div>
+</div>
+<div class="bg-white p-md rounded-lg border border-outline-variant flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-green-50 text-green-600 flex items-center justify-center">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline">Review Queue</p>
+<p class="font-body-sm font-semibold">4 pending</p>
+</div>
+</div>
+<div class="bg-white p-md rounded-lg border border-outline-variant flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-purple-50 text-purple-600 flex items-center justify-center">
+<span class="material-symbols-outlined">auto_graph</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline">Avg Grade</p>
+<p class="font-body-sm font-semibold">B+ (3.6 GPA)</p>
+</div>
+</div>
+<div class="bg-white p-md rounded-lg border border-outline-variant flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-amber-50 text-amber-600 flex items-center justify-center">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline">Flags</p>
+<p class="font-body-sm font-semibold">2 students at risk</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer (Authority: JSON) -->
+<footer class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-xl mt-2xl gap-md border-t border-outline-variant dark:border-outline bg-surface dark:bg-background">
+<div class="flex flex-col items-center md:items-start gap-xs">
+<span class="font-label-md text-label-md font-bold text-primary">Academia AI</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-on-tertiary-fixed-variant">© 2024 Institute of Computational Intelligence. Powered by Gemini.</p>
+</div>
+<div class="flex gap-lg">
+<a class="text-on-surface-variant dark:text-on-tertiary-fixed-variant font-label-sm text-label-sm hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-fixed-variant font-label-sm text-label-sm hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-fixed-variant font-label-sm text-label-sm hover:text-secondary transition-colors" href="#">Faculty Support</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-fixed-variant font-label-sm text-label-sm hover:text-secondary transition-colors" href="#">Emergency Contacts</a>
+</div>
+</footer>
+
+<!-- Success Overlay (Hidden) -->
+<div class="fixed inset-0 bg-primary/20 backdrop-blur-md z-[100] hidden flex items-center justify-center" id="gen-overlay">
+<div class="bg-white p-2xl rounded-2xl shadow-2xl flex flex-col items-center gap-lg max-w-md text-center scale-90 transition-transform duration-300">
+<div class="w-24 h-24 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center animate-pulse">
+<span class="material-symbols-outlined text-5xl">auto_fix_high</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-primary mb-sm">AI Analysis in Progress</h2>
+<p class="text-on-surface-variant font-body-md">Gemini is synthesizing semester data, behavioral patterns, and qualitative feedback for the final report...</p>
+</div>
+<div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-0 transition-all duration-[3000ms] ease-in-out" id="progress-bar"></div>
+</div>
+</div>
+</div>
+
+<script>
+    function showLoading() {
+        const overlay = document.getElementById('gen-overlay');
+        const progressBar = document.getElementById('progress-bar');
+        
+        overlay.classList.remove('hidden');
+        overlay.querySelector('div').classList.add('scale-100');
+        
+        setTimeout(() => {
+            progressBar.style.width = '100%';
+        }, 100);
+    }
+
+    function exportPDF() {
+        const element = document.getElementById('pdf-content');
+        const opt = {
+            margin:       10,
+            filename:     'Academic_Report.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+</script>
+{% endblock %}

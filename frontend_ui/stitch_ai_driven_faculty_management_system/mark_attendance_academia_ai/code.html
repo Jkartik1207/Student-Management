@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manual Attendance - Academia AI</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#8293b8",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "tertiary-container": "#292c2e",
+                    "secondary": "#4b41e1",
+                    "inverse-primary": "#b6c6ef",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "on-surface-variant": "#44474e",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "on-tertiary-fixed": "#191c1e",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-primary-fixed-variant": "#364768",
+                    "surface-container-high": "#dce9ff",
+                    "background": "#f8f9ff",
+                    "surface": "#f8f9ff",
+                    "on-background": "#0b1c30",
+                    "tertiary-fixed": "#e0e3e5",
+                    "outline-variant": "#c5c6cf",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#081b3a",
+                    "surface-container-low": "#eff4ff",
+                    "primary-fixed": "#d8e2ff",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-tint": "#4e5e81",
+                    "primary-container": "#1a2b4b",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary": "#141819",
+                    "primary-fixed-dim": "#b6c6ef",
+                    "on-secondary-fixed": "#0f0069",
+                    "outline": "#75777f",
+                    "inverse-surface": "#213145",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary-container": "#fffbff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container": "#e5eeff",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#3323cc",
+                    "secondary-fixed-dim": "#c3c0ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "primary": "#031635",
+                    "surface-bright": "#f8f9ff",
+                    "secondary-container": "#645efb",
+                    "on-tertiary-container": "#909395",
+                    "secondary-fixed": "#e2dfff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "gutter": "24px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "sm": "8px",
+                    "2xl": "48px",
+                    "md": "16px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Geist"],
+                    "headline-lg-mobile": ["Geist"],
+                    "label-sm": ["Geist"],
+                    "headline-xl": ["Geist"],
+                    "label-md": ["Geist"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "14px", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .attendance-radio:checked + label {
+            background-color: var(--tw-secondary);
+            color: white;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c5c6cf;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #75777f;
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background min-h-screen flex">
+<!-- SideNavBar (Shared Component) -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant z-50">
+<div class="flex flex-col h-full py-lg px-md gap-sm">
+<div class="px-md mb-xl">
+<div class="flex items-center gap-sm mb-xs">
+<span class="material-symbols-outlined text-primary text-3xl">school</span>
+<h1 class="font-headline-sm text-headline-sm font-semibold text-primary">Faculty Portal</h1>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Modern Academic Suite</p>
+</div>
+<nav class="flex-1 flex flex-col gap-xs">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary text-on-secondary rounded-lg font-medium shadow-sm" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Students</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-md text-label-md">Assignments</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">construction</span>
+<span class="font-label-md text-label-md">Academic Tools</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-label-md text-label-md">Communication</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-xs pt-lg border-t border-outline-variant">
+<button class="flex items-center justify-center gap-sm bg-primary-container text-on-primary-container py-sm px-md rounded-lg mb-md hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">spark</span>
+<span class="font-label-md text-label-md">Gemini Insights</span>
+</button>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 flex flex-col min-h-screen relative">
+<!-- TopNavBar (Shared Component) -->
+<header class="flex justify-between items-center w-full px-lg py-md sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-outline-variant">
+<div class="flex items-center gap-lg">
+<span class="font-headline-md text-headline-md font-bold text-primary">Academia AI</span>
+<div class="hidden lg:flex items-center gap-md ml-xl">
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-secondary transition-colors duration-200" href="#">Directory</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-label-md text-label-md" href="#">Attendance</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-secondary transition-colors duration-200" href="#">Grades</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden sm:block">
+<input class="bg-surface-container-low border border-outline-variant rounded-full py-sm pl-xl pr-md text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all w-64" placeholder="Search students..." type="text"/>
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+</div>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-sm pl-md border-l border-outline-variant">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a faculty member in their 40s, wearing a crisp navy blazer, set against a blurred academic library background with soft, natural lighting. The image conveys expertise, approachability, and institutional prestige in a modern academic setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC0SabQQrOwHjp3A_EcNUm0qwbzO8whqafpB2S3QGbzvf4DiXZD04sXaQv5PB5pQVtzcvZ2vV4LhZvsYwda6ICt2fwLNxTQ0LVTnB2jhHbE6Jq81-sqog96JRRkstRx97JM562JlcHFhuOq9i6ZynCSL3tBN3p7CHNjTrZLMa6G3F4vVMkGXf3OH5z2LauBYjQTBt35oyK8NnQSO3zR6hNS5wNBBvZGppGV7QkEhVu3eq7ng9QgPviihbv_L6NrMg1WCHM-aYIOje3"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Attendance Canvas -->
+<div class="p-lg flex-1 pb-32">
+<!-- Header Section -->
+<section class="mb-xl">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-xs">Student Attendance</h2>
+<p class="text-on-surface-variant font-body-md">Manual marking for Semester II - Academic Year 2024</p>
+</div>
+<div class="flex flex-wrap items-center gap-md">
+<!-- Batch Selector -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant px-xs">Select Batch</label>
+<div class="relative min-w-[200px]">
+<select class="appearance-none w-full bg-white border border-outline-variant rounded-lg px-md py-sm pr-xl text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary transition-all cursor-pointer">
+<option>Batch A - Computer Science</option>
+<option>Batch B - Data Engineering</option>
+<option>Batch C - AI & Robotics</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+<!-- Date Picker -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant px-xs">Attendance Date</label>
+<div class="relative">
+<input class="bg-white border border-outline-variant rounded-lg px-md py-sm text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary transition-all cursor-pointer" type="date" value="2024-10-25"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Bar -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-md mb-xl">
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">group</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase">Total Students</p>
+<p class="text-headline-md font-bold">42</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-700">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase">Marked Present</p>
+<p class="text-headline-md font-bold" id="present-count">38</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-700">
+<span class="material-symbols-outlined">cancel</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase">Marked Absent</p>
+<p class="text-headline-md font-bold" id="absent-count">4</p>
+</div>
+</div>
+</div>
+<!-- Attendance Table -->
+<div class="bg-white rounded-xl border border-outline-variant overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider w-16 text-center">ID</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Student Name</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider hidden lg:table-cell">Roll Number</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Attendance Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Student Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md text-center text-on-surface-variant font-label-sm">01</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex-shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A high-quality portrait of a female university student with curly hair, wearing a neutral-toned sweater, smiling warmly in a bright campus hallway with soft bokeh lighting. The style is clean, modern, and fits a high-end educational platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBK78oFwF8Kyg_2dwcSuacX5O_YqSCoB_GO3PYj3MRp1SOIvHSN0KWQFzfmzWrXQwG0zYXu0Y-roCkhUhHx2cooNrrky9NxzHq2pudhGJeqhW3CFcAVRB5ljMCRPMzbO2UMEwqL4hkN5QTlfGkDrRaypBoAPwIB9geCqOu3GM9tu_zwQgSBziPIreUsXJD2x3T2xdpguOl8Wvwm70Ep-FJBgx1_2hV3d2g2KvN3cooZMCBBypNs1WC6aB_Umrf7EBykS8bYuPvqjvW"/>
+</div>
+<div>
+<p class="font-body-md text-on-surface font-medium">Abigail Harrison</p>
+<p class="text-label-sm text-on-surface-variant lg:hidden">Roll: #CS-2024-001</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md text-on-surface-variant font-body-sm hidden lg:table-cell">#CS-2024-001</td>
+<td class="px-lg py-md">
+<div class="flex justify-end items-center gap-sm">
+<div class="flex bg-surface-container-high rounded-lg p-xs">
+<input checked="" class="hidden attendance-radio peer/present" id="s1_present" name="student_1" type="radio"/>
+<label class="cursor-pointer px-md py-sm rounded-md font-label-md text-label-md transition-all flex items-center gap-xs peer-checked/present:bg-primary peer-checked/present:text-white text-on-surface-variant" for="s1_present">
+<span class="material-symbols-outlined text-sm">check</span>
+                                                Present
+                                            </label>
+<input class="hidden attendance-radio peer/absent" id="s1_absent" name="student_1" type="radio"/>
+<label class="cursor-pointer px-md py-sm rounded-md font-label-md text-label-md transition-all flex items-center gap-xs peer-checked/absent:bg-error peer-checked/absent:text-white text-on-surface-variant" for="s1_absent">
+<span class="material-symbols-outlined text-sm">close</span>
+                                                Absent
+                                            </label>
+</div>
+</div>
+</td>
+</tr>
+<!-- Student Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md text-center text-on-surface-variant font-label-sm">02</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex-shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a male student with glasses, wearing a grey hoodie, sitting in a modern university study space with large windows and technological motifs. The lighting is crisp and the background is tastefully blurred to focus on the professional student portrait." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdpRIXcaulRQ1tJH235jFwYOqnny397CkFpMWqDF_XWl1WAacWqnYalaT2oqiKeQg_ypB9jizoUHwQLTGwTccnXfr8iQhfe6UT-uf5hpi9Hxjwb67gQ13ZziJhHXdGg1goo5w0gIntazOkibBGeYS8qN-Q9x_ECqhf_MToFkaCb3x_C0oAEYKoGZo_Coq1fTKXYF4JIkwJ9Kn130bkIOvgpeWaWVjGf-KmSrppRKG0JL-rosQnNVi0v3GTyBJqJlDYdHW5YfBIdffL"/>
+</div>
+<div>
+<p class="font-body-md text-on-surface font-medium">Benjamin Carter</p>
+<p class="text-label-sm text-on-surface-variant lg:hidden">Roll: #CS-2024-002</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md text-on-surface-variant font-body-sm hidden lg:table-cell">#CS-2024-002</td>
+<td class="px-lg py-md">
+<div class="flex justify-end items-center gap-sm">
+<div class="flex bg-surface-container-high rounded-lg p-xs">
+<input checked="" class="hidden attendance-radio peer/present" id="s2_present" name="student_2" type="radio"/>
+<label class="cursor-pointer px-md py-sm rounded-md font-label-md text-label-md transition-all flex items-center gap-xs peer-checked/present:bg-primary peer-checked/present:text-white text-on-surface-variant" for="s2_present">
+<span class="material-symbols-outlined text-sm">check</span>
+                                                Present
+                                            </label>
+<input class="hidden attendance-radio peer/absent" id="s2_absent" name="student_2" type="radio"/>
+<label class="cursor-pointer px-md py-sm rounded-md font-label-md text-label-md transition-all flex items-center gap-xs peer-checked/absent:bg-error peer-checked/absent:text-white text-on-surface-variant" for="s2_absent">
+<span class="material-symbols-outlined text-sm">close</span>
+                                                Absent
+                                            </label>
+</div>
+</div>
+</td>
+</tr>
+<!-- Student Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md text-center text-on-surface-variant font-label-sm">03</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex-shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up professional portrait of a female student of East Asian descent, smiling, wearing a simple white blouse, with a clean architectural background of a modern library. Soft, elegant lighting enhances the sophisticated and academic feel of the platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrrygGPJT_rUNijeL1SldfRdB7GV9ydUw5sBLDHW5cwpvofnlYM4Dcp1xvfI6j7Z0t6I5c0OEPfeJbc5snWW9A7L0bSHrh-b6tvDpgG8wNeX2xHhRHTZdLVzpAFd17wLB0HrKfxAjTikd6oh5WSFvjY2-x2XpzwuyoBMEXG9yPW0T2s8gEsGh6zWsuzT-bLw-jt6TBmVxB3j2Ti4AKZ4FWe7pSp6ksTp1yVikyiUTpmK3RSoZOcWlKCSti9PqI7fDhoZKQAGwMlB-S"/>
+</div>
+<div>
+<p class="font-body-md text-on-surface font-medium">Catherine Liao</p>
+<p class="text-label-sm text-on-surface-variant lg:hidden">Roll: #CS-2024-003</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md text-on-surface-variant font-body-sm hidden lg:table-cell">#CS-2024-003</td>
+<td class="px-lg py-md">
+<div class="flex justify-end items-center gap-sm">
+<div class="flex bg-surface-container-high rounded-lg p-xs">
+<input class="hidden attendance-radio peer/present" id="s3_present" name="student_3" type="radio"/>
+<label class="cursor-pointer px-md py-sm rounded-md font-label-md text-label-md transition-all flex items-center gap-xs peer-checked/present:bg-primary peer-checked/present:text-white text-on-surface-variant" for="s3_present">
+<span class="material-symbols-outlined text-sm">check</span>
+                                                Present
+                                            </label>
+<input checked="" class="hidden attendance-radio peer/absent" id="s3_absent" name="student_3" type="radio"/>
+<label class="cursor-pointer px-md py-sm rounded-md font-label-md text-label-md transition-all flex items-center gap-xs peer-checked/absent:bg-error peer-checked/absent:text-white text-on-surface-variant" for="s3_absent">
+<span class="material-symbols-outlined text-sm">close</span>
+                                                Absent
+                                            </label>
+</div>
+</div>
+</td>
+</tr>
+<!-- AI Insight Placeholder Row -->
+<tr class="bg-primary-container/5">
+<td class="px-lg py-sm" colspan="4">
+<div class="flex items-center gap-sm text-secondary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">spark</span>
+<p class="text-label-sm font-medium">AI Insight: Catherine Liao has missed 3 consecutive classes. Suggest checking in.</p>
+</div>
+</td>
+</tr>
+<!-- Student Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md text-center text-on-surface-variant font-label-sm">04</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex-shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a male student with a focused expression, wearing a navy polo shirt, standing in front of a digital laboratory screen. The visual tone is high-tech, academic, and extremely clear, with a professional color palette of blue and white tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG9U32sOF7bTLMLqghQ7bHOBCTYF5TVoX3G42TZtC_Q5ndAt_z9S-eASo8rTN8Z-GlUJiAmEM3jYCViS1hiAZpKdehjQoUpZsp4aYM9Jkj4Wh4O8V6228_o7ejd0EnBFOAM_7GJttiG3ZnY6xEs2Hn2UnvczeI2RdRZxN4VWWjPcnpbR57e82ORZjZZGLMoI2Ew8k2AJ182_Ib5ufCQAAvjGpBvEdYfrCgjhQTqkRjYAWEBLDOWsjn1ofKn2oifk1HnrCaQfTY-3ez"/>
+</div>
+<div>
+<p class="font-body-md text-on-surface font-medium">David Miller</p>
+<p class="text-label-sm text-on-surface-variant lg:hidden">Roll: #CS-2024-004</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md text-on-surface-variant font-body-sm hidden lg:table-cell">#CS-2024-004</td>
+<td class="px-lg py-md">
+<div class="flex justify-end items-center gap-sm">
+<div class="flex bg-surface-container-high rounded-lg p-xs">
+<input checked="" class="hidden attendance-radio peer/present" id="s4_present" name="student_4" type="radio"/>
+<label class="cursor-pointer px-md py-sm rounded-md font-label-md text-label-md transition-all flex items-center gap-xs peer-checked/present:bg-primary peer-checked/present:text-white text-on-surface-variant" for="s4_present">
+<span class="material-symbols-outlined text-sm">check</span>
+                                                Present
+                                            </label>
+<input class="hidden attendance-radio peer/absent" id="s4_absent" name="student_4" type="radio"/>
+<label class="cursor-pointer px-md py-sm rounded-md font-label-md text-label-md transition-all flex items-center gap-xs peer-checked/absent:bg-error peer-checked/absent:text-white text-on-surface-variant" for="s4_absent">
+<span class="material-symbols-outlined text-sm">close</span>
+                                                Absent
+                                            </label>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Sticky Footer Action Bar -->
+<footer class="fixed bottom-0 right-0 left-0 md:left-64 bg-white/80 backdrop-blur-md border-t border-outline-variant px-lg py-md flex items-center justify-between z-50">
+<div class="hidden sm:flex items-center gap-md">
+<span class="flex items-center gap-xs text-on-surface-variant text-body-sm">
+<span class="material-symbols-outlined text-sm">info</span>
+                    Draft saved automatically at 14:32
+                </span>
+</div>
+<div class="flex items-center gap-md w-full sm:w-auto">
+<button class="flex-1 sm:flex-none px-xl py-sm bg-surface text-on-surface border border-outline-variant rounded-lg font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+                    Discard Changes
+                </button>
+<button class="flex-1 sm:flex-none px-xl py-sm bg-primary text-white rounded-lg font-label-md text-label-md hover:opacity-90 shadow-md flex items-center justify-center gap-md active:scale-95 transition-all" id="save-btn">
+                    Save Attendance
+                    <span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</footer>
+<!-- Bottom Mobile Nav -->
+<nav class="md:hidden fixed bottom-20 left-4 right-4 bg-primary-container text-on-primary-container h-16 rounded-full flex items-center justify-around px-md shadow-lg z-50">
+<button class="p-sm text-on-primary-container/60 hover:text-white transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+</button>
+<button class="p-sm text-white font-bold bg-secondary rounded-full w-12 h-12 flex items-center justify-center -mt-8 border-4 border-background shadow-xl">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+</button>
+<button class="p-sm text-on-primary-container/60 hover:text-white transition-colors">
+<span class="material-symbols-outlined">assignment</span>
+</button>
+<button class="p-sm text-on-primary-container/60 hover:text-white transition-colors">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+</nav>
+</main>
+<script>
+        // Micro-interactions and simple state management
+        document.getElementById('save-btn').addEventListener('click', function() {
+            const btn = this;
+            const originalContent = btn.innerHTML;
+            
+            // UI Feedback
+            btn.innerHTML = `<span class="animate-spin material-symbols-outlined text-sm">sync</span> Saving...`;
+            btn.classList.add('opacity-80', 'pointer-events-none');
+            
+            setTimeout(() => {
+                btn.innerHTML = `<span class="material-symbols-outlined text-sm">check_circle</span> Success`;
+                btn.classList.remove('bg-primary');
+                btn.classList.add('bg-green-600');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.classList.remove('bg-green-600', 'opacity-80', 'pointer-events-none');
+                    btn.classList.add('bg-primary');
+                }, 2000);
+            }, 1200);
+        });
+
+        // Dynamic Counts (Mock behavior)
+        const radios = document.querySelectorAll('.attendance-radio');
+        radios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                const presentCount = document.querySelectorAll('.attendance-radio[id*="present"]:checked').length;
+                const absentCount = document.querySelectorAll('.attendance-radio[id*="absent"]:checked').length;
+                
+                document.getElementById('present-count').innerText = presentCount + 34; // offset for mock
+                document.getElementById('absent-count').innerText = absentCount + 3; // offset for mock
+            });
+        });
+    </script>
+</body></html>

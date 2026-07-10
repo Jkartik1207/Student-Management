@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Faculty Dashboard | Academia AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#8293b8",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "tertiary-container": "#292c2e",
+                    "secondary": "#4b41e1",
+                    "inverse-primary": "#b6c6ef",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "on-surface-variant": "#44474e",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "on-tertiary-fixed": "#191c1e",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-primary-fixed-variant": "#364768",
+                    "surface-container-high": "#dce9ff",
+                    "background": "#f8f9ff",
+                    "surface": "#f8f9ff",
+                    "on-background": "#0b1c30",
+                    "tertiary-fixed": "#e0e3e5",
+                    "outline-variant": "#c5c6cf",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#081b3a",
+                    "surface-container-low": "#eff4ff",
+                    "primary-fixed": "#d8e2ff",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-tint": "#4e5e81",
+                    "primary-container": "#1a2b4b",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary": "#141819",
+                    "primary-fixed-dim": "#b6c6ef",
+                    "on-secondary-fixed": "#0f0069",
+                    "outline": "#75777f",
+                    "inverse-surface": "#213145",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary-container": "#fffbff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container": "#e5eeff",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#3323cc",
+                    "secondary-fixed-dim": "#c3c0ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "primary": "#031635",
+                    "surface-bright": "#f8f9ff",
+                    "secondary-container": "#645efb",
+                    "on-tertiary-container": "#909395",
+                    "secondary-fixed": "#e2dfff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "gutter": "24px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "sm": "8px",
+                    "2xl": "48px",
+                    "md": "16px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Geist"],
+                    "headline-lg-mobile": ["Geist"],
+                    "label-sm": ["Geist"],
+                    "headline-xl": ["Geist"],
+                    "label-md": ["Geist"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "14px", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9ff; }
+        .geist-font { font-family: 'Geist', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ai-insight-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
+            border: 1px solid #e2e8f0;
+        }
+        .ai-glow {
+            box-shadow: 0 0 15px rgba(75, 65, 225, 0.1);
+        }
+    </style>
+</head>
+<body class="text-on-background">
+<!-- Layout Container -->
+<div class="flex min-h-screen">
+{% if request.user.is_authenticated %}
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low dark:bg-tertiary-container shadow-sm py-lg px-md gap-sm z-50">
+<div class="flex items-center gap-sm mb-xl px-xs">
+<div class="w-10 h-10 rounded bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-primary dark:text-primary-fixed">Faculty Portal</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Modern Academic Suite</p>
+</div>
+</div>
+<nav class="flex-1 space-y-xs">
+<a class="flex items-center gap-md px-md py-sm bg-secondary text-on-secondary rounded-lg font-medium transition-transform active:scale-[0.98]" href="{% url 'dashboard' %}">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high dark:hover:bg-tertiary transition-all duration-200" href="{% url 'attendance' %}">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Students</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high dark:hover:bg-tertiary transition-all duration-200" href="{% url 'assignments' %}">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-md text-label-md">Assignments</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high dark:hover:bg-tertiary transition-all duration-200" href="{% url 'generate_questions' %}">
+<span class="material-symbols-outlined">quiz</span>
+<span class="font-label-md text-label-md">Question Gen</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high dark:hover:bg-tertiary transition-all duration-200" href="{% url 'timetable' %}">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-md text-label-md">Timetable</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high dark:hover:bg-tertiary transition-all duration-200" href="{% url 'ai_analytics' %}">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">AI Analytics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high dark:hover:bg-tertiary transition-all duration-200" href="{% url 'academic_report' %}">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high dark:hover:bg-tertiary transition-all duration-200" href="{% url 'parent_communication' %}">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-label-md text-label-md">Communication</span>
+</a>
+</nav>
+<div class="mt-auto space-y-xs">
+<button class="w-full flex items-center justify-center gap-sm py-sm mb-md bg-secondary-container text-on-secondary-container rounded-lg font-label-md text-label-md ai-glow">
+<span class="material-symbols-outlined">auto_awesome</span>
+                    Gemini Insights
+                </button>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high dark:hover:bg-tertiary transition-all duration-200" href="{% url 'faculty_dashboard' %}">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">My Stats</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high dark:hover:bg-tertiary transition-all duration-200" href="{% url 'accreditation' %}">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-md text-label-md">Accreditation</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-red-500 hover:bg-red-50 dark:hover:bg-tertiary transition-all duration-200" href="{% url 'logout' %}">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</aside>
+{% endif %}
+
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col {% if request.user.is_authenticated %}md:ml-64{% endif %} bg-background min-h-screen">
+<!-- TopNavBar -->
+{% if request.user.is_authenticated %}
+<header class="flex justify-between items-center w-full px-lg py-md sticky top-0 z-40 bg-surface/95 backdrop-blur-sm border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-lg">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">Academia AI</span>
+<div class="hidden lg:flex relative w-80">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-sm focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all" placeholder="Search students, courses..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">auto_awesome</span>
+</button>
+<button class="flex items-center gap-sm px-lg py-sm bg-primary text-on-primary rounded-full font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all">
+                        AI Chat
+                    </button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a middle-aged university faculty member with glasses, wearing a sharp charcoal blazer over a white shirt. The background is a soft-focus academic library with leather-bound books. The lighting is bright and professional, conveying authority and approachability in a modern light-mode interface style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0jxTbJJ9uwv8KNLDItTM6U4uPX3MXzCti2tUSQO9aZ-bFVduAlLr90MpF0BHpVkajmcGflnBYMqfIqgf1qIMPpX2bW1judqNcYvJV9YIxVoDqn6yRq5-6YW2ZOqdkltbrLHO8xqYswRCfS__wGmHEbL0Bsa2Dlifb_2ommaRggNo13AcGYuJJ2E9TaCuFMBVEUGxtugPzh37KmytzWogFrx5r-nXYDAlraDunU8HxomSQB8Ain-rgAIEjY_-heKMARUeShpX5DyoW"/>
+</div>
+</div>
+</header>
+{% endif %}
+    {% if messages %}
+        <div class="px-lg py-sm">
+            {% for message in messages %}
+                <div class="p-4 mb-4 text-sm {% if message.tags == 'error' %}text-red-800 bg-red-50{% else %}text-green-800 bg-green-50{% endif %} rounded-lg" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+</main>
+</div>
+</body>
+</html>

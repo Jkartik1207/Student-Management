@@ -1,0 +1,151 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<!-- Attendance Canvas -->
+<div class="p-lg flex-1 pb-32">
+<!-- Header Section -->
+<section class="mb-xl">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-xs">Student Attendance</h2>
+<p class="text-on-surface-variant font-body-md">Manual marking for Semester II - Academic Year 2024</p>
+</div>
+<div class="flex flex-wrap items-center gap-md">
+<!-- Batch Selector -->
+<form class="flex flex-col gap-xs" method="POST">
+{% csrf_token %}
+<label class="font-label-sm text-label-sm text-on-surface-variant px-xs">Select Batch</label>
+<div class="relative min-w-[200px]">
+<select class="appearance-none w-full bg-white border border-outline-variant rounded-lg px-md py-sm pr-xl text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary transition-all cursor-pointer" name="batch" onchange="this.form.submit()">
+<option value="All">All Batches</option>
+{% for b in batches %}
+<option value="{{ b }}" {% if b == selected_batch %}selected{% endif %}>{{ b }}</option>
+{% endfor %}
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</form>
+<!-- Date Picker -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant px-xs">Attendance Date</label>
+<div class="relative">
+<input class="bg-white border border-outline-variant rounded-lg px-md py-sm text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary transition-all cursor-pointer" type="date" value="{{ today|date:'Y-m-d' }}" readonly/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Bar -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-md mb-xl">
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">group</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase">Total Students</p>
+<p class="text-headline-md font-bold">{{ students|length }}</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-700">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase">Marked Present</p>
+<p class="text-headline-md font-bold" id="present-count">{{ present_count|default:"-" }}</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-700">
+<span class="material-symbols-outlined">cancel</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase">Marked Absent</p>
+<p class="text-headline-md font-bold" id="absent-count">{{ absent_count|default:"-" }}</p>
+</div>
+</div>
+</div>
+<!-- Attendance Table -->
+<form method="POST" id="attendance-form">
+{% csrf_token %}
+<input type="hidden" name="mark_attendance" value="1">
+<div class="bg-white rounded-xl border border-outline-variant overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider w-16 text-center">ID</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Student Name</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider hidden lg:table-cell">Roll Number</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Attendance Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+{% for s in students %}
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md text-center text-on-surface-variant font-label-sm">{{ forloop.counter }}</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex-shrink-0 flex items-center justify-center font-bold text-primary text-xs">
+{{ s.name|make_list|first }}
+</div>
+<div>
+<p class="font-body-md text-on-surface font-medium">{{ s.name }}</p>
+<p class="text-label-sm text-on-surface-variant lg:hidden">Roll: {{ s.roll_number }}</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md text-on-surface-variant font-body-sm hidden lg:table-cell">{{ s.roll_number }}</td>
+<td class="px-lg py-md">
+<div class="flex justify-end items-center gap-sm">
+<div class="flex bg-surface-container-high rounded-lg p-xs">
+<input class="hidden attendance-radio peer/present" id="s{{ s.id }}_present" name="status_{{ s.id }}" value="Present" type="radio"/>
+<label class="cursor-pointer px-md py-sm rounded-md font-label-md text-label-md transition-all flex items-center gap-xs peer-checked/present:bg-primary peer-checked/present:text-white text-on-surface-variant" for="s{{ s.id }}_present">
+<span class="material-symbols-outlined text-sm">check</span> Present
+</label>
+<input class="hidden attendance-radio peer/absent" id="s{{ s.id }}_absent" name="status_{{ s.id }}" value="Absent" type="radio"/>
+<label class="cursor-pointer px-md py-sm rounded-md font-label-md text-label-md transition-all flex items-center gap-xs peer-checked/absent:bg-error peer-checked/absent:text-white text-on-surface-variant" for="s{{ s.id }}_absent">
+<span class="material-symbols-outlined text-sm">close</span> Absent
+</label>
+</div>
+</div>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="fixed bottom-0 right-0 left-0 md:left-64 bg-white/80 backdrop-blur-md border-t border-outline-variant px-lg py-md flex items-center justify-between z-50">
+<div class="hidden sm:flex items-center gap-md">
+<span class="flex items-center gap-xs text-on-surface-variant text-body-sm">
+<span class="material-symbols-outlined text-sm">info</span>
+                    Ensure to verify attendance before saving.
+                </span>
+</div>
+<div class="flex items-center gap-md w-full sm:w-auto">
+<button type="submit" form="attendance-form" class="flex-1 sm:flex-none px-xl py-sm bg-primary text-white rounded-lg font-label-md text-label-md hover:opacity-90 shadow-md flex items-center justify-center gap-md active:scale-95 transition-all" id="save-btn">
+                    Save Attendance
+                    <span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</footer>
+</form>
+<!-- Bottom Mobile Nav -->
+<nav class="md:hidden fixed bottom-20 left-4 right-4 bg-primary-container text-on-primary-container h-16 rounded-full flex items-center justify-around px-md shadow-lg z-50">
+<button class="p-sm text-on-primary-container/60 hover:text-white transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+</button>
+<button class="p-sm text-white font-bold bg-secondary rounded-full w-12 h-12 flex items-center justify-center -mt-8 border-4 border-background shadow-xl">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+</button>
+<button class="p-sm text-on-primary-container/60 hover:text-white transition-colors">
+<span class="material-symbols-outlined">assignment</span>
+</button>
+<button class="p-sm text-on-primary-container/60 hover:text-white transition-colors">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+</nav>
+{% endblock %}

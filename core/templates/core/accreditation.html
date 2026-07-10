@@ -1,0 +1,195 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<!-- Dashboard Canvas -->
+<div class="p-lg max-w-[1400px] mx-auto">
+<!-- Statistics Bento Grid -->
+<section class="grid grid-cols-12 gap-lg mb-2xl">
+<!-- Main Stats -->
+<div class="col-span-12 lg:col-span-8 grid grid-cols-3 gap-lg">
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Students</span>
+<div class="flex items-baseline gap-sm">
+<span class="font-headline-lg text-headline-lg text-primary">2,480</span>
+<span class="text-secondary font-label-sm">+4%</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-sm overflow-hidden">
+<div class="bg-primary h-full w-3/4"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Faculty Count</span>
+<div class="flex items-baseline gap-sm">
+<span class="font-headline-lg text-headline-lg text-primary">124</span>
+<span class="text-on-surface-variant font-label-sm">S:F 20:1</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-sm overflow-hidden">
+<div class="bg-secondary h-full w-2/3"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Research Output</span>
+<div class="flex items-baseline gap-sm">
+<span class="font-headline-lg text-headline-lg text-primary">86%</span>
+<span class="text-secondary font-label-sm">Target</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-sm overflow-hidden">
+<div class="bg-secondary-container h-full w-[86%]"></div>
+</div>
+</div>
+</div>
+<!-- AI Quick Action -->
+<div class="col-span-12 lg:col-span-4 ai-glow border border-secondary/20 p-lg rounded-xl flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h3 class="font-headline-md text-headline-md text-primary">Accreditation Flow</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-lg leading-relaxed">
+                            Based on live data, your Institutional Strengths have increased. Ready to update your NAAC/NBA documentation?
+                        </p>
+</div>
+<form method="POST">
+{% csrf_token %}
+<button type="submit" class="w-full bg-primary text-on-primary py-md rounded-lg font-label-md flex items-center justify-center gap-md hover:scale-[1.02] active:scale-95 transition-all">
+                        Draft Accreditation Overview (NAAC/NBA)
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</form>
+</div>
+</section>
+<!-- Live Data Overview -->
+<section class="grid grid-cols-12 gap-lg mb-2xl">
+<div class="col-span-12 md:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<div class="p-lg border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-primary">Departmental Compliance</h3>
+<button class="text-secondary font-label-md hover:underline">View All</button>
+</div>
+<div class="p-0">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-lg py-md font-label-sm text-on-surface-variant">DEPARTMENT</th>
+<th class="px-lg py-md font-label-sm text-on-surface-variant text-center">FACULTY:STUDENT</th>
+<th class="px-lg py-md font-label-sm text-on-surface-variant">COMPLIANCE</th>
+<th class="px-lg py-md font-label-sm text-on-surface-variant">STATUS</th>
+</tr>
+</thead>
+<tbody class="font-body-sm divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md font-medium text-primary">Computer Science</td>
+<td class="px-lg py-md text-center">1:18</td>
+<td class="px-lg py-md">
+<div class="w-24 bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[94%]"></div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="px-sm py-xs bg-green-100 text-green-700 rounded text-xs font-bold uppercase">Optimal</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-lg py-md font-medium text-primary">Mechanical Eng.</td>
+<td class="px-lg py-md text-center">1:22</td>
+<td class="px-lg py-md">
+<div class="w-24 bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[88%]"></div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="px-sm py-xs bg-green-100 text-green-700 rounded text-xs font-bold uppercase">Optimal</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-lg py-md font-medium text-primary">Electrical Eng.</td>
+<td class="px-lg py-md text-center">1:25</td>
+<td class="px-lg py-md">
+<div class="w-24 bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-amber-100 h-full w-[76%]"></div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="px-sm py-xs bg-amber-100 text-amber-700 rounded text-xs font-bold uppercase">Warning</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="col-span-12 md:col-span-5 flex flex-col gap-lg">
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex-grow">
+<h4 class="font-label-md text-label-md text-primary mb-md">Accreditation Timeline</h4>
+<div class="space-y-lg relative before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-outline-variant">
+<div class="relative pl-xl">
+<div class="absolute left-0 top-1 w-4 h-4 rounded-full border-4 border-secondary bg-surface"></div>
+<p class="text-label-sm text-secondary font-bold">JAN 2024</p>
+<p class="text-body-sm font-medium">Internal Audit Submission</p>
+</div>
+<div class="relative pl-xl">
+<div class="absolute left-0 top-1 w-4 h-4 rounded-full border-4 border-outline bg-surface"></div>
+<p class="text-label-sm text-on-surface-variant">MAR 2024</p>
+<p class="text-body-sm font-medium">Drafting Self-Study Report (SSR)</p>
+</div>
+<div class="relative pl-xl opacity-50">
+<div class="absolute left-0 top-1 w-4 h-4 rounded-full border-4 border-outline-variant bg-surface"></div>
+<p class="text-label-sm text-on-surface-variant">JUN 2024</p>
+<p class="text-body-sm font-medium">Peer Review Visit</p>
+</div>
+</div>
+</div>
+<div class="bg-primary text-on-primary p-lg rounded-xl flex items-center justify-between">
+<div>
+<p class="font-label-sm opacity-80 uppercase">AI Data Readiness</p>
+<p class="font-headline-md">High Confidence</p>
+</div>
+<span class="material-symbols-outlined text-4xl">verified_user</span>
+</div>
+</div>
+</section>
+<!-- Formal Document View (Generated Content) -->
+<section class="{% if not report %}hidden{% endif %} bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-lg p-2xl max-w-[1000px] mx-auto mt-2xl mb-2xl relative" id="doc-view">
+<!-- AI Watermark -->
+<div class="absolute top-8 right-8 flex items-center gap-xs text-secondary-container opacity-20 select-none">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-label-md">DRAFT GENERATED BY ACADEMIA AI</span>
+</div>
+<div class="border-b-2 border-primary pb-lg mb-xl flex justify-between items-end">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-primary uppercase">Institutional Self-Study Report</h2>
+<p class="font-body-md text-on-surface-variant italic mt-xs">Summary Evaluation for NAAC/NBA Cycle 3</p>
+</div>
+<div class="flex gap-md">
+<button class="p-sm rounded-lg border border-outline-variant hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-primary">print</span>
+</button>
+<button class="p-sm rounded-lg border border-outline-variant hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-primary">download</span>
+</button>
+</div>
+</div>
+<div class="space-y-xl text-on-background leading-relaxed">
+<div class="space-y-xl text-on-background leading-relaxed">
+{{ report|safe }}
+<div class="pt-xl mt-2xl border-t border-outline-variant flex justify-between items-center">
+<div class="flex gap-md">
+<button class="bg-primary text-on-primary px-xl py-md rounded-lg font-label-md hover:opacity-90 transition-all">Approve Draft</button>
+<button class="bg-secondary-container text-on-secondary-container px-xl py-md rounded-lg font-label-md hover:opacity-90 transition-all">Edit with AI</button>
+</div>
+<p class="font-label-sm text-on-surface-variant italic">Last synced with ERP: 14 mins ago</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Shell -->
+<footer class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-xl mt-2xl gap-md border-t border-outline-variant bg-surface">
+<div class="flex flex-col items-center md:items-start gap-xs">
+<span class="font-label-md text-label-md font-bold text-primary">Academia AI</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 Institute of Computational Intelligence. Powered by Gemini.</p>
+</div>
+<div class="flex gap-lg">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Faculty Support</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Emergency Contacts</a>
+</div>
+</footer>
+{% endblock %}

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Academia AI | Parent Communication Module</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#8293b8",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "tertiary-container": "#292c2e",
+                    "secondary": "#4b41e1",
+                    "inverse-primary": "#b6c6ef",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "on-surface-variant": "#44474e",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "on-tertiary-fixed": "#191c1e",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-primary-fixed-variant": "#364768",
+                    "surface-container-high": "#dce9ff",
+                    "background": "#f8f9ff",
+                    "surface": "#f8f9ff",
+                    "on-background": "#0b1c30",
+                    "tertiary-fixed": "#e0e3e5",
+                    "outline-variant": "#c5c6cf",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#081b3a",
+                    "surface-container-low": "#eff4ff",
+                    "primary-fixed": "#d8e2ff",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-tint": "#4e5e81",
+                    "primary-container": "#1a2b4b",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary": "#141819",
+                    "primary-fixed-dim": "#b6c6ef",
+                    "on-secondary-fixed": "#0f0069",
+                    "outline": "#75777f",
+                    "inverse-surface": "#213145",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary-container": "#fffbff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container": "#e5eeff",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#3323cc",
+                    "secondary-fixed-dim": "#c3c0ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "primary": "#031635",
+                    "surface-bright": "#f8f9ff",
+                    "secondary-container": "#645efb",
+                    "on-tertiary-container": "#909395",
+                    "secondary-fixed": "#e2dfff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "gutter": "24px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "sm": "8px",
+                    "2xl": "48px",
+                    "md": "16px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Geist"],
+                    "headline-lg-mobile": ["Geist"],
+                    "label-sm": ["Geist"],
+                    "headline-xl": ["Geist"],
+                    "label-md": ["Geist"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "14px", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .ai-insight-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
+            box-shadow: 0px 4px 12px rgba(75, 65, 225, 0.08);
+            border: 1px solid rgba(75, 65, 225, 0.15);
+        }
+        .bento-cell {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+        .bento-cell:hover {
+            box-shadow: 0px 4px 12px rgba(26, 43, 75, 0.08);
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4b41e1 !important;
+            box-shadow: 0 0 0 2px rgba(75, 65, 225, 0.1) !important;
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface">
+<!-- Sidebar Navigation -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low dark:bg-tertiary-container py-lg px-md gap-sm shadow-sm z-50">
+<div class="mb-xl flex items-center gap-sm px-sm">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary">school</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-semibold text-primary">Faculty Portal</h1>
+<p class="text-xs text-on-surface-variant">Modern Academic Suite</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Students</span>
+</a>
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-md text-label-md">Assignments</span>
+</a>
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">construction</span>
+<span class="font-label-md text-label-md">Academic Tools</span>
+</a>
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<!-- Active Tab: Communication -->
+<a class="flex items-center gap-md p-md bg-secondary text-on-secondary rounded-lg font-medium shadow-md" href="#">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-label-md text-label-md">Communication</span>
+</a>
+</nav>
+<div class="mt-auto space-y-1">
+<button class="w-full mb-md bg-secondary-container/20 text-secondary border border-secondary/30 py-sm rounded-lg flex items-center justify-center gap-xs font-label-md text-label-md hover:bg-secondary-container/30 transition-all">
+<span class="material-symbols-outlined text-[18px]">spark</span>
+                Gemini Insights
+            </button>
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-64 min-h-screen flex flex-col">
+<!-- Top Bar -->
+<header class="flex justify-between items-center w-full px-lg py-md sticky top-0 z-40 bg-surface/95 backdrop-blur-sm border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<h2 class="font-headline-md text-headline-md font-bold text-primary">Academia AI</h2>
+<div class="hidden md:flex items-center bg-surface-container rounded-full px-md py-xs border border-outline-variant/30">
+<span class="material-symbols-outlined text-on-surface-variant mr-xs">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-64" placeholder="Search faculty records..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-secondary transition-colors duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors duration-200">
+<span class="material-symbols-outlined">spark</span>
+</button>
+<div class="h-8 w-px bg-outline-variant"></div>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-full font-label-md text-label-md hover:opacity-90 transition-all flex items-center gap-xs">
+                    AI Chat
+                </button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a faculty member, a middle-aged professor with a friendly smile, wearing a professional blazer. The background is a softly blurred modern university office with bookshelves and a large window showing campus greenery. High-key lighting, corporate portrait style, clean and focused aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7lWdAs7kagayZ86DZl7uykQhIiLfJnlp9Kl2ZBp57-5NMhITWlpHrqIAWiZuCSr_u8__6eQe9ZZjzxq-No9gL9754bfm3vbcK-YSluHZLNVHPd9OpkmogDxLtOonNOPBWxbG_23N7IH-opEGt9iEG9lDYYEZH-eqoZCAjYOYR6-HQiaZDwHcwTOJvU7NgNUWgJ48oIbRuEpjv6AL1lo6sT67uhDMZXsxFohZHf1mti6v0883zpoPZokMDWCHOw_j3nbB1ZlBDdmDv"/>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="p-lg lg:p-2xl flex-1 max-w-7xl mx-auto w-full">
+<div class="mb-xl">
+<nav class="flex items-center gap-sm text-on-surface-variant mb-sm">
+<span class="font-label-sm text-label-sm">COMMUNICATION</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="font-label-sm text-label-sm text-primary">PARENT EMAIL MODULE</span>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-primary">Parent Outreach Center</h1>
+<p class="text-on-surface-variant mt-xs">Compose and send automated academic updates powered by Gemini AI.</p>
+</div>
+<!-- Main Bento Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+<!-- Left Column: Controls (4 cols) -->
+<div class="lg:col-span-4 space-y-lg">
+<!-- Step 1: Student Selection -->
+<div class="bento-cell p-lg rounded-xl">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">01</div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Select Student</h3>
+</div>
+<div class="space-y-md">
+<div class="relative">
+<select class="w-full appearance-none bg-surface border border-outline-variant rounded-lg p-md pr-xl font-body-md text-on-surface cursor-pointer" id="student-select">
+<option disabled="" selected="" value="">Search Student...</option>
+<option data-absences="1" data-attendance="98.5%" data-tardies="0" value="leo_valdez">Leo Valdez</option>
+<option data-absences="0" data-attendance="99.8%" data-tardies="0" value="annabeth_chase">Annabeth Chase</option>
+<option data-absences="12" data-attendance="84.2%" data-tardies="5" value="percy_jackson">Percy Jackson</option>
+<option data-absences="4" data-attendance="92.1%" data-tardies="1" value="hazel_levesque">Hazel Levesque</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+<!-- Attendance Preview Card -->
+<div class="hidden bg-surface-container-low rounded-lg p-md border border-outline-variant/30 fade-in" id="attendance-summary">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-sm">ATTENDANCE DATA</p>
+<div class="grid grid-cols-3 gap-sm">
+<div class="text-center">
+<p class="text-xs text-on-surface-variant">Rate</p>
+<p class="font-bold text-primary" id="stat-rate">-</p>
+</div>
+<div class="text-center border-x border-outline-variant/30">
+<p class="text-xs text-on-surface-variant">Absences</p>
+<p class="font-bold text-primary" id="stat-absences">-</p>
+</div>
+<div class="text-center">
+<p class="text-xs text-on-surface-variant">Tardies</p>
+<p class="font-bold text-primary" id="stat-tardies">-</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 2: Tone Selection -->
+<div class="bento-cell p-lg rounded-xl">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">02</div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Email Tone</h3>
+</div>
+<div class="grid grid-cols-1 gap-sm">
+<label class="relative flex items-center p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container transition-all group has-[:checked]:border-secondary has-[:checked]:bg-secondary-container/5">
+<input checked="" class="w-4 h-4 text-secondary focus:ring-secondary mr-md" name="tone" type="radio" value="Encouraging"/>
+<div>
+<p class="font-label-md text-label-md text-primary">Encouraging</p>
+<p class="text-xs text-on-surface-variant">Celebrate progress and potential.</p>
+</div>
+</label>
+<label class="relative flex items-center p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container transition-all group has-[:checked]:border-secondary has-[:checked]:bg-secondary-container/5">
+<input class="w-4 h-4 text-secondary focus:ring-secondary mr-md" name="tone" type="radio" value="Neutral"/>
+<div>
+<p class="font-label-md text-label-md text-primary">Neutral</p>
+<p class="text-xs text-on-surface-variant">Routine administrative update.</p>
+</div>
+</label>
+<label class="relative flex items-center p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container transition-all group has-[:checked]:border-secondary has-[:checked]:bg-secondary-container/5">
+<input class="w-4 h-4 text-secondary focus:ring-secondary mr-md" name="tone" type="radio" value="Concerned"/>
+<div>
+<p class="font-label-md text-label-md text-primary">Concerned</p>
+<p class="text-xs text-on-surface-variant">Address specific behavioral or academic issues.</p>
+</div>
+</label>
+</div>
+</div>
+<!-- AI Trigger -->
+<button class="w-full bg-secondary text-on-secondary py-md rounded-xl font-bold flex items-center justify-center gap-sm shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed" id="generate-btn">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">spark</span>
+                        AI Draft Email
+                    </button>
+</div>
+<!-- Right Column: Editor (8 cols) -->
+<div class="lg:col-span-8">
+<div class="bento-cell rounded-xl overflow-hidden flex flex-col h-full min-h-[600px]">
+<!-- Editor Header -->
+<div class="bg-surface-container-low p-md border-b border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant">edit_note</span>
+<span class="font-label-md text-label-md text-primary">DRAFT EDITOR</span>
+</div>
+<div class="flex gap-sm">
+<button class="p-xs text-on-surface-variant hover:bg-outline-variant/20 rounded">
+<span class="material-symbols-outlined text-[20px]">format_bold</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:bg-outline-variant/20 rounded">
+<span class="material-symbols-outlined text-[20px]">format_italic</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:bg-outline-variant/20 rounded">
+<span class="material-symbols-outlined text-[20px]">link</span>
+</button>
+<div class="w-px h-6 bg-outline-variant mx-xs"></div>
+<button class="p-xs text-on-surface-variant hover:bg-outline-variant/20 rounded">
+<span class="material-symbols-outlined text-[20px]">undo</span>
+</button>
+</div>
+</div>
+<!-- Email Meta Fields -->
+<div class="p-lg border-b border-outline-variant/50 space-y-sm bg-white/50">
+<div class="flex items-center gap-md">
+<span class="w-12 text-on-surface-variant text-sm">To:</span>
+<input class="flex-1 bg-transparent border-none p-0 text-sm focus:ring-0 font-medium" id="email-to" type="text" value="parent_contact@example.edu"/>
+</div>
+<div class="flex items-center gap-md">
+<span class="w-12 text-on-surface-variant text-sm">Subject:</span>
+<input class="flex-1 bg-transparent border-none p-0 text-sm focus:ring-0 font-medium" id="email-subject" placeholder="Subject will be generated..." type="text"/>
+</div>
+</div>
+<!-- Main Text Area -->
+<div class="flex-1 relative p-lg">
+<div class="hidden absolute inset-0 bg-white/80 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center gap-md" id="ai-loading">
+<div class="w-12 h-12 border-4 border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
+<p class="font-label-md text-label-md text-secondary animate-pulse">Gemini is drafting your message...</p>
+</div>
+<textarea class="w-full h-full min-h-[400px] border-none focus:ring-0 p-0 text-body-md resize-none leading-relaxed" id="email-body" placeholder="Select a student and click 'AI Draft Email' to begin..."></textarea>
+</div>
+<!-- AI Insight Container -->
+<div class="mx-lg mb-lg p-md ai-insight-card rounded-lg flex items-start gap-md">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div>
+<p class="text-xs font-bold text-secondary uppercase tracking-wider">AI Recommendation</p>
+<p class="text-sm text-on-surface mt-1" id="ai-suggestion-text">Select a student to see data-driven insights here.</p>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="p-lg bg-surface-container-low border-t border-outline-variant flex justify-end gap-md">
+<button class="px-xl py-md text-on-surface-variant font-label-md text-label-md hover:bg-outline-variant/20 rounded-lg transition-all">
+                                Save Draft
+                            </button>
+<button class="bg-primary text-on-primary px-xl py-md rounded-lg font-bold flex items-center gap-sm shadow-lg hover:opacity-95 transition-all disabled:opacity-50" id="send-btn">
+<span class="material-symbols-outlined">send</span>
+                                Send Email
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-xl mt-2xl gap-md border-t border-outline-variant bg-surface">
+<div class="flex flex-col items-center md:items-start gap-xs">
+<p class="font-label-md text-label-md font-bold text-primary">Academia AI</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 Institute of Computational Intelligence. Powered by Gemini.</p>
+</div>
+<div class="flex gap-lg">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Faculty Support</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Emergency Contacts</a>
+</div>
+</footer>
+</main>
+<script>
+        const studentSelect = document.getElementById('student-select');
+        const attendanceSummary = document.getElementById('attendance-summary');
+        const statRate = document.getElementById('stat-rate');
+        const statAbsences = document.getElementById('stat-absences');
+        const statTardies = document.getElementById('stat-tardies');
+        const generateBtn = document.getElementById('generate-btn');
+        const emailBody = document.getElementById('email-body');
+        const emailSubject = document.getElementById('email-subject');
+        const aiLoading = document.getElementById('ai-loading');
+        const aiSuggestionText = document.getElementById('ai-suggestion-text');
+
+        // Student Data Mapping
+        studentSelect.addEventListener('change', (e) => {
+            const selectedOption = e.target.options[e.target.selectedIndex];
+            const data = {
+                rate: selectedOption.getAttribute('data-attendance'),
+                absences: selectedOption.getAttribute('data-absences'),
+                tardies: selectedOption.getAttribute('data-tardies'),
+                name: selectedOption.text
+            };
+
+            attendanceSummary.classList.remove('hidden');
+            statRate.innerText = data.rate;
+            statAbsences.innerText = data.absences;
+            statTardies.innerText = data.tardies;
+
+            if (parseInt(data.absences) > 10) {
+                aiSuggestionText.innerText = `Alert: ${data.name} has exceeded the standard absence threshold. I recommend using a "Concerned" tone to schedule a parent-teacher conference.`;
+            } else if (parseFloat(data.rate) > 95) {
+                aiSuggestionText.innerText = `${data.name} has exemplary attendance. An "Encouraging" tone would be perfect to acknowledge their commitment.`;
+            } else {
+                aiSuggestionText.innerText = `${data.name}'s performance is stable. A "Neutral" tone is appropriate for standard status updates.`;
+            }
+        });
+
+        // AI Generation Mockup
+        generateBtn.addEventListener('click', () => {
+            if (!studentSelect.value) {
+                alert('Please select a student first.');
+                return;
+            }
+
+            const tone = document.querySelector('input[name="tone"]:checked').value;
+            const studentName = studentSelect.options[studentSelect.selectedIndex].text;
+            const rate = statRate.innerText;
+            const absences = statAbsences.innerText;
+
+            aiLoading.classList.remove('hidden');
+
+            // Artificial Delay
+            setTimeout(() => {
+                aiLoading.classList.add('hidden');
+                
+                let subject = "";
+                let body = "";
+
+                if (tone === "Encouraging") {
+                    subject = `Academic Excellence Update: ${studentName}`;
+                    body = `Dear Parent/Guardian,\n\nI am writing to share some positive news regarding ${studentName}'s progress this semester. Their dedication to the coursework has been truly impressive.\n\nNotably, ${studentName} maintains an exceptional attendance record of ${rate}, with only ${absences} absences to date. This consistency is clearly reflected in their academic performance and classroom participation.\n\nKeep up the great work!\n\nBest regards,\n[Faculty Name]`;
+                } else if (tone === "Concerned") {
+                    subject = `Important: Academic & Attendance Discussion for ${studentName}`;
+                    body = `Dear Parent/Guardian,\n\nI am reaching out to discuss some concerns regarding ${studentName}'s recent engagement and attendance. \n\nOur records indicate an attendance rate of ${rate}, with ${absences} recorded absences. Regular attendance is critical for success in this course, and I have noticed a direct impact on ${studentName}'s ability to keep up with current assignments.\n\nI would like to schedule a brief call to discuss how we can best support ${studentName} moving forward.\n\nSincerely,\n[Faculty Name]`;
+                } else {
+                    subject = `Monthly Academic Progress Report: ${studentName}`;
+                    body = `Dear Parent/Guardian,\n\nPlease find the monthly progress update for ${studentName} below.\n\nAttendance Overview:\n- Rate: ${rate}\n- Total Absences: ${absences}\n\n${studentName} is currently meeting the basic requirements of the curriculum. We will continue to monitor their progress and provide updates as necessary.\n\nRegards,\n[Faculty Name]`;
+                }
+
+                emailSubject.value = subject;
+                emailBody.value = body;
+            }, 1500);
+        });
+
+        // Send Interaction
+        document.getElementById('send-btn').addEventListener('click', () => {
+            const btn = document.getElementById('send-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> Sending...`;
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.innerHTML = `<span class="material-symbols-outlined">check_circle</span> Sent!`;
+                btn.classList.replace('bg-primary', 'bg-green-600');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.replace('bg-green-600', 'bg-primary');
+                    btn.disabled = false;
+                }, 2000);
+            }, 1200);
+        });
+    </script>
+</body></html>

@@ -1,0 +1,201 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<!-- Dynamic Content Area -->
+<div class="flex-1 overflow-y-auto p-xl custom-scrollbar">
+<!-- Create New Assignment Section -->
+<section class="max-w-5xl mx-auto space-y-xl" id="section-create">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-primary">Assignment Designer</h3>
+<p class="text-on-surface-variant">Design curriculum modules with manual control or AI-assisted intelligence.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<div class="lg:col-span-8 bg-white border border-outline-variant p-lg rounded-xl shadow-sm">
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+<!-- Toggle Header -->
+<div class="flex items-center justify-between mb-lg bg-surface-container-low p-2 rounded-lg border border-outline-variant/30">
+<label class="flex-1 py-3 rounded-md flex items-center justify-center gap-sm transition-all bg-white shadow-sm text-secondary font-semibold cursor-pointer" id="label-ai">
+<input type="radio" name="creation_type" value="ai" class="hidden" checked onchange="switchMethod('ai')">
+<span class="material-symbols-outlined">auto_awesome</span> AI Generated
+</label>
+<label class="flex-1 py-3 rounded-md flex items-center justify-center gap-sm transition-all text-on-surface-variant cursor-pointer" id="label-manual">
+<input type="radio" name="creation_type" value="upload" class="hidden" onchange="switchMethod('manual')">
+<span class="material-symbols-outlined">description</span> Manual / Upload
+</label>
+</div>
+<div class="space-y-sm mb-md">
+<label class="font-label-md text-on-surface-variant">Assignment Title</label>
+<input class="w-full p-md bg-surface-bright border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all" name="title" required type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-md mb-md">
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface-variant">Max Marks</label>
+<input type="number" class="w-full p-md bg-surface-bright border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all" name="max_marks" value="100" required/>
+</div>
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface-variant">Due Date</label>
+<input type="date" class="w-full p-md bg-surface-bright border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all" name="due_date" required/>
+</div>
+</div>
+<!-- AI Method Content -->
+<div class="space-y-md animate-in fade-in duration-500" id="method-ai">
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface-variant">Topic or Learning Objective</label>
+<input class="w-full p-md bg-surface-bright border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all" name="topic" placeholder="e.g. Introduction to Quantum Computing &amp; Error Correction" type="text" id="topic_input"/>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface-variant">Complexity Level</label>
+<select class="w-full p-md bg-surface-bright border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary">
+<option>Undergraduate (Level 1)</option>
+<option>Graduate (Advanced)</option>
+<option>Post-Doctoral Seminar</option>
+</select>
+</div>
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface-variant">Output Format</label>
+<select class="w-full p-md bg-surface-bright border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary">
+<option>Comparative Essay</option>
+<option>Problem Set</option>
+<option>Research Proposal</option>
+</select>
+</div>
+</div>
+<div class="pt-md">
+<button class="w-full bg-secondary text-on-secondary py-lg rounded-lg font-semibold flex items-center justify-center gap-md hover:bg-secondary/90 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined">bolt</span>
+                                        Generate Assignment via Gemini
+                                    </button>
+</div>
+</div>
+<!-- Manual Method Content (Hidden by default) -->
+<div class="hidden space-y-md animate-in fade-in duration-500" id="method-manual">
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface-variant">Assignment Description</label>
+<textarea name="description" class="w-full p-md bg-surface-bright border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary transition-all" placeholder="Paste your assignment brief here..." rows="6"></textarea>
+</div>
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface-variant">Attach File (Optional)</label>
+<input type="file" name="assignment_file" id="assignment_file" class="hidden"/>
+<label for="assignment_file" class="block border-2 border-dashed border-outline-variant rounded-xl p-xl text-center bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[48px] text-outline group-hover:text-secondary transition-colors">cloud_upload</span>
+<p class="font-body-md mt-sm" id="file_name_display">Click to upload or drag files here</p>
+<p class="text-on-surface-variant text-label-sm">PDF, DOCX, or LaTeX (Max 25MB)</p>
+</label>
+<div class="pt-md mt-md">
+<button type="submit" class="w-full bg-secondary text-on-secondary py-lg rounded-lg font-semibold flex items-center justify-center gap-md hover:bg-secondary/90 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined">save</span> Save Assignment
+</button>
+</div>
+</div>
+</form>
+</div>
+<!-- Right Column: Sidebar Insight -->
+<div class="lg:col-span-4 space-y-lg">
+<div class="ai-glow border border-secondary/20 p-lg rounded-xl">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h4 class="font-label-md text-primary font-bold">AI DESIGN INSIGHT</h4>
+</div>
+<p class="text-body-sm text-on-surface-variant leading-relaxed">
+                                Our analysis shows that modules combining <span class="text-secondary font-medium">Comparative Logic</span> with <span class="text-secondary font-medium">Open-ended Research</span> result in 22% higher engagement scores for this semester's cohort.
+                            </p>
+<div class="mt-lg pt-lg border-t border-secondary/10 flex items-center justify-between">
+<span class="text-label-sm text-on-surface-variant">Cohort Maturity Score</span>
+<span class="text-secondary font-bold">8.4/10</span>
+</div>
+</div>
+<div class="bg-white border border-outline-variant p-lg rounded-xl">
+<h4 class="font-label-md text-on-surface-variant mb-md">PREVIEW</h4>
+<div class="w-full h-40 rounded bg-surface-container-low flex items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center opacity-40" data-alt="A clean, minimalist 3D rendering of a stack of papers and a glowing digital pen. The papers are translucent white, illuminated by a soft indigo light emanating from the pen. The background is a pale, neutral gray. The overall mood is professional, academic, and technologically forward-looking, with high-quality global illumination and soft shadows." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAi26UAetLDO-b-RLvB32XhXHKOS6FJMnXiJ3_zk9ydmHfsdJ87aI8KdyWePPRQgyw3NiFBVcyEjs65gFBEXZjt0G66boUqMYxE46Votuwtwry1aY9qikAmJ0tPO6xhM0NTDKzpVwxZBdlmvtnuer8ZpOEmjyY6bk5XkkKe2FSRDqiP0MDyeT0sb9krDckDgj8OrainzNrUtauVVdahDFTE5RfVa-net7oA3w8dyQF3XtG3HD9XGU5ETYkXAjKydKJKOLkOQvceoSMX')"></div>
+<span class="relative z-10 text-on-surface-variant text-label-sm italic">Live Preview Generation...</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Submissions Section (Replaced by Existing Assignments List) -->
+<section class="max-w-5xl mx-auto space-y-xl" id="section-existing">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-primary">Existing Assignments</h3>
+</div>
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#F8FAFC]">
+<tr>
+<th class="px-lg py-md font-label-sm text-on-surface-variant uppercase tracking-wider">Title</th>
+<th class="px-lg py-md font-label-sm text-on-surface-variant uppercase tracking-wider">Due Date</th>
+<th class="px-lg py-md font-label-sm text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+{% for a in assignments %}
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md">
+<span class="font-medium text-primary">{{ a.title }}</span>
+{% if a.assignment_file %}
+<br><a href="{{ a.assignment_file.url }}" class="text-xs text-secondary hover:underline" target="_blank">Download Attachment</a>
+{% endif %}
+</td>
+<td class="px-lg py-md text-on-surface-variant font-body-sm">{{ a.due_date }}</td>
+<td class="px-lg py-md text-right">
+<a href="{% url 'evaluate_assignment' a.pk %}" class="bg-primary text-white px-md py-2 rounded-lg font-label-sm hover:opacity-90 active:scale-95 transition-all inline-block">
+View Submissions
+</a>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+
+<script>
+function switchMethod(method) {
+    if (method === 'ai') {
+        document.getElementById('method-ai').classList.remove('hidden');
+        document.getElementById('method-manual').classList.add('hidden');
+        document.getElementById('label-ai').classList.add('bg-white', 'shadow-sm', 'text-secondary', 'font-semibold');
+        document.getElementById('label-ai').classList.remove('text-on-surface-variant');
+        document.getElementById('label-manual').classList.remove('bg-white', 'shadow-sm', 'text-secondary', 'font-semibold');
+        document.getElementById('label-manual').classList.add('text-on-surface-variant');
+        document.getElementById('topic_input').required = true;
+    } else {
+        document.getElementById('method-manual').classList.remove('hidden');
+        document.getElementById('method-ai').classList.add('hidden');
+        document.getElementById('label-manual').classList.add('bg-white', 'shadow-sm', 'text-secondary', 'font-semibold');
+        document.getElementById('label-manual').classList.remove('text-on-surface-variant');
+        document.getElementById('label-ai').classList.remove('bg-white', 'shadow-sm', 'text-secondary', 'font-semibold');
+        document.getElementById('label-ai').classList.add('text-on-surface-variant');
+        document.getElementById('topic_input').required = false;
+    }
+}
+
+document.getElementById('assignment_file').addEventListener('change', function(e) {
+    var display = document.getElementById('file_name_display');
+    if (e.target.files && e.target.files.length > 0) {
+        display.textContent = e.target.files[0].name;
+        display.classList.add('text-primary', 'font-bold');
+    } else {
+        display.textContent = 'Click to upload or drag files here';
+        display.classList.remove('text-primary', 'font-bold');
+    }
+});
+</script>
+</div>
+<!-- Footer -->
+<footer class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-md bg-surface border-t border-outline-variant dark:border-outline z-30">
+<div class="flex items-center gap-sm">
+<span class="font-label-md text-label-md font-bold text-primary">Academia AI</span>
+<span class="text-on-surface-variant dark:text-on-tertiary-fixed-variant text-label-sm">| © 2024 Institute of Computational Intelligence.</span>
+</div>
+<div class="flex gap-lg">
+<a class="text-on-surface-variant dark:text-on-tertiary-fixed-variant font-label-sm hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-fixed-variant font-label-sm hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-fixed-variant font-label-sm hover:text-secondary transition-colors" href="#">Faculty Support</a>
+</div>
+</footer>
+{% endblock %}

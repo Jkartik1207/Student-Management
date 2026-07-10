@@ -1,0 +1,201 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<!-- Content Grid -->
+<div class="p-lg lg:p-xl space-y-xl">
+<!-- Stats Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Stat Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex items-center justify-between">
+<div class="space-y-xs">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Students</p>
+<h3 class="font-headline-lg text-headline-lg text-primary">{{ total_students }}</h3>
+<p class="text-xs text-green-600 flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-sm">trending_up</span> +4.2% from last term
+                            </p>
+</div>
+<div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">groups</span>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex items-center justify-between">
+<div class="space-y-xs">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Faculty</p>
+<h3 class="font-headline-lg text-headline-lg text-primary">{{ total_faculty }}</h3>
+<p class="text-xs text-on-surface-variant font-medium">12 Adjunct Professors</p>
+</div>
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">supervisor_account</span>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex items-center justify-between">
+<div class="space-y-xs">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Active Courses</p>
+<h3 class="font-headline-lg text-headline-lg text-primary">24</h3>
+<p class="text-xs text-secondary flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-sm">event_available</span> 3 Exams this week
+                            </p>
+</div>
+<div class="w-12 h-12 rounded-lg bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">menu_book</span>
+</div>
+</div>
+</div>
+<!-- Main Section: Table & AI Insights -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Student Table Area -->
+<div class="lg:col-span-2 space-y-md">
+<div class="flex items-center justify-between px-xs">
+<h2 class="font-headline-md text-headline-md text-primary">All Enrolled Students</h2>
+<div class="flex gap-sm">
+<button class="flex items-center gap-xs px-md py-sm border border-outline-variant rounded-lg font-label-md text-label-md hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-[20px]">filter_list</span> Filter
+                                </button>
+<button class="flex items-center gap-xs px-md py-sm border border-outline-variant rounded-lg font-label-md text-label-md hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-[20px]">file_download</span> Export
+                                </button>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase">Student ID</th>
+<th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase">Name</th>
+<th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase">Batch</th>
+<th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase text-right">Attendance %</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+{% for stat in student_stats %}
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-lg py-md font-body-sm text-body-sm text-on-surface-variant">{{ stat.student.roll_number }}</td>
+<td class="px-lg py-md flex items-center gap-md">
+<div class="w-8 h-8 rounded-full bg-primary-fixed-dim flex items-center justify-center text-xs font-bold text-primary">{{ stat.student.name|make_list|first }}</div>
+<span class="font-label-md text-label-md text-on-surface">{{ stat.student.name }}</span>
+</td>
+<td class="px-lg py-md font-body-sm text-body-sm text-on-surface-variant">{{ stat.student.batch }}</td>
+<td class="px-lg py-md text-right">
+<span class="font-label-md text-label-md text-green-600 bg-green-50 px-2 py-1 rounded">{{ stat.attendance_percentage }}%</span>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<div class="p-md bg-surface-container-low flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Showing {{ student_stats|length }} students</span>
+<div class="flex gap-xs">
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant rounded hover:bg-white"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant rounded bg-primary text-on-primary">1</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant rounded hover:bg-white">2</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant rounded hover:bg-white"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Insights Side Panel -->
+<div class="space-y-md">
+<div class="flex items-center gap-sm px-xs">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">spark</span>
+<h2 class="font-headline-md text-headline-md text-primary">AI Dashboard Insights</h2>
+</div>
+<div class="ai-insight-gradient p-lg rounded-xl ai-glow border-l-4 border-l-secondary space-y-lg">
+<div class="space-y-sm">
+<h4 class="font-label-md text-label-md text-primary">Weekly Summary</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                                    Attendance is up <span class="text-green-600 font-semibold">12%</span> in CS-102. AI suggests rescheduling the Friday laboratory session to increase participation for the Data Ethics cohort.
+                                </p>
+</div>
+<div class="p-md bg-white/60 border border-secondary/10 rounded-lg space-y-md">
+<div class="flex items-start gap-md">
+<span class="material-symbols-outlined text-secondary mt-1">warning</span>
+<div class="space-y-xs">
+<p class="font-label-sm text-label-sm text-on-surface">Low Participation Alert</p>
+<p class="text-[12px] text-on-surface-variant">5 students in "Quant Logic" haven't logged in since Monday.</p>
+<button class="text-[12px] text-secondary font-semibold hover:underline mt-1">Nudge Students</button>
+</div>
+</div>
+</div>
+<div class="space-y-md">
+<h4 class="font-label-md text-label-md text-primary">Automated Research Support</h4>
+<div class="space-y-sm">
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Paper Draft Analysis</span>
+<span class="text-xs bg-secondary-container/20 text-on-secondary-fixed-variant px-2 py-0.5 rounded">80% Done</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 80%"></div>
+</div>
+</div>
+</div>
+<button class="w-full py-md bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary-container transition-all flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined">auto_awesome</span>
+                                Generate Full Report
+                            </button>
+</div>
+<!-- Quick Widget -->
+<div class="bg-surface-container-low border border-outline-variant p-lg rounded-xl">
+<div class="flex justify-between items-center mb-md">
+<h4 class="font-label-md text-label-md text-primary">Upcoming Deadlines</h4>
+<button class="text-xs text-secondary font-medium">View Calendar</button>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center gap-md py-xs">
+<div class="w-2 h-2 rounded-full bg-red-500"></div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Grade Midterms - CS 101</p>
+<span class="ml-auto text-[10px] text-on-surface-variant">2h left</span>
+</div>
+<div class="flex items-center gap-md py-xs">
+<div class="w-2 h-2 rounded-full bg-amber-500"></div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Faculty Review Meeting</p>
+<span class="ml-auto text-[10px] text-on-surface-variant">Tomorrow</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-xl mt-auto gap-md border-t border-outline-variant dark:border-outline bg-surface dark:bg-background">
+<div class="space-y-sm text-center md:text-left">
+<span class="font-label-md text-label-md font-bold text-primary">Academia AI</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-on-tertiary-fixed-variant max-w-sm">© 2024 Institute of Computational Intelligence. Powered by Gemini.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-lg">
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-tertiary-fixed-variant hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-tertiary-fixed-variant hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-tertiary-fixed-variant hover:text-secondary transition-colors" href="#">Faculty Support</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-tertiary-fixed-variant hover:text-secondary transition-colors" href="#">Emergency Contacts</a>
+</div>
+</footer>
+
+<script>
+
+        // Simple search filtering simulation
+        const searchInput = document.querySelector('input[placeholder*="Search students"]');
+        searchInput?.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+
+        // Dashboard load animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.bg-surface-container-lowest, .ai-insight-gradient');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(10px)';
+                card.style.transition = `all 0.4s ease ${index * 0.05}s`;
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        });
+    
+</script>
+{% endblock %}

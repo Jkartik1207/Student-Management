@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Academia AI | AI Question Paper Generator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#8293b8",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "tertiary-container": "#292c2e",
+                    "secondary": "#4b41e1",
+                    "inverse-primary": "#b6c6ef",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "on-surface-variant": "#44474e",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "on-tertiary-fixed": "#191c1e",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-primary-fixed-variant": "#364768",
+                    "surface-container-high": "#dce9ff",
+                    "background": "#f8f9ff",
+                    "surface": "#f8f9ff",
+                    "on-background": "#0b1c30",
+                    "tertiary-fixed": "#e0e3e5",
+                    "outline-variant": "#c5c6cf",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#081b3a",
+                    "surface-container-low": "#eff4ff",
+                    "primary-fixed": "#d8e2ff",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-tint": "#4e5e81",
+                    "primary-container": "#1a2b4b",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary": "#141819",
+                    "primary-fixed-dim": "#b6c6ef",
+                    "on-secondary-fixed": "#0f0069",
+                    "outline": "#75777f",
+                    "inverse-surface": "#213145",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary-container": "#fffbff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container": "#e5eeff",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#3323cc",
+                    "secondary-fixed-dim": "#c3c0ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "primary": "#031635",
+                    "surface-bright": "#f8f9ff",
+                    "secondary-container": "#645efb",
+                    "on-tertiary-container": "#909395",
+                    "secondary-fixed": "#e2dfff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "gutter": "24px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "sm": "8px",
+                    "2xl": "48px",
+                    "md": "16px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Geist"],
+                    "headline-lg-mobile": ["Geist"],
+                    "label-sm": ["Geist"],
+                    "headline-xl": ["Geist"],
+                    "label-md": ["Geist"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "14px", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .ai-glow {
+            box-shadow: 0 0 15px rgba(75, 65, 225, 0.15);
+        }
+        .segmented-control input:checked + label {
+            background-color: theme('colors.secondary');
+            color: white;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid theme('colors.outline-variant');
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-lg py-md sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">Academia AI</span>
+<nav class="hidden md:flex gap-lg ml-xl">
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-secondary transition-colors duration-200" href="#">Dashboard</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-label-md text-label-md" href="#">Academic Tools</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-secondary transition-colors duration-200" href="#">Reports</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex items-center bg-surface-container-low px-md py-xs rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant mr-xs">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-48" placeholder="Search resources..." type="text"/>
+</div>
+<button class="flex items-center gap-xs bg-primary text-on-primary px-lg py-sm rounded-full font-label-md hover:opacity-90 transition-all active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">spark</span>
+                AI Chat
+            </button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a faculty member in a modern academic setting. The person is smiling warmly, wearing smart business casual attire. The background is a soft-focus university library with warm, natural sunlight filtering through large windows, maintaining a clean and authoritative academic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfEuQjlA1CvXLVq-S9dJyU3RA5i7PLi6A0kSvSx2HTvt-wbE1nr1WRQB6-KS-2uWxc6eR3GpjuTrhbZ1YzEsf7L6zDvHSIxj6IrWdzbtDZT97OKy0WtPM958JxrOqMxvRp0IRJ8T_jz3wH_MdSOFhe_bdIyYfemJxccdeTOZhrcMefPtY3JjEahHDxxbT8ErqJ6cMoLVhrT6N5lgUnO0mYqFwTJixDy_zV8ri6mvqdNMzcGDwT2f0OYkUNiTTc8YR8KGsesSo8TOsH"/>
+</div>
+</div>
+</header>
+<div class="flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-[calc(100vh-64px)] w-64 sticky top-16 py-lg px-md gap-sm bg-surface-container-low border-r border-outline-variant">
+<div class="mb-lg">
+<div class="flex items-center gap-sm px-sm">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-label-md font-semibold text-primary">Faculty Portal</h3>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Modern Academic Suite</p>
+</div>
+</div>
+</div>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md">Students</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-md">Assignments</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary text-on-secondary rounded-lg font-medium shadow-sm transition-all" href="#">
+<span class="material-symbols-outlined">construction</span>
+<span class="font-label-md">Academic Tools</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md">Reports</span>
+</a>
+<div class="mt-auto pt-lg border-t border-outline-variant">
+<button class="w-full mb-md flex items-center justify-center gap-sm bg-primary-container text-on-primary-container py-md rounded-xl font-label-md border border-outline/20">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                    Gemini Insights
+                </button>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-lg md:p-2xl bg-surface">
+<div class="max-w-5xl mx-auto">
+<div class="mb-xl">
+<h1 class="font-headline-xl text-headline-xl text-primary mb-xs">AI Question Paper Generator</h1>
+<p class="text-on-surface-variant font-body-md">Create high-quality, customized assessments in seconds using computational intelligence.</p>
+</div>
+<!-- Control Panel (Bento-style layout) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg mb-2xl">
+<div class="lg:col-span-2 bg-white p-lg rounded-xl border border-outline-variant shadow-sm">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="flex flex-col gap-sm">
+<label class="font-label-md text-primary">Subject</label>
+<input class="w-full rounded-lg border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all font-body-md py-md" id="subject-input" placeholder="e.g. Quantum Physics" type="text"/>
+</div>
+<div class="flex flex-col gap-sm">
+<label class="font-label-md text-primary">Topic</label>
+<input class="w-full rounded-lg border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all font-body-md py-md" id="topic-input" placeholder="e.g. Schrodinger Equation" type="text"/>
+</div>
+</div>
+<div class="mt-lg">
+<label class="font-label-md text-primary mb-sm block">Difficulty Level</label>
+<div class="flex bg-surface-container-low p-1 rounded-full border border-outline-variant segmented-control">
+<input checked="" class="hidden" id="easy" name="difficulty" type="radio"/>
+<label class="flex-1 text-center py-sm rounded-full font-label-md cursor-pointer transition-all text-on-surface-variant" for="easy">Easy</label>
+<input class="hidden" id="medium" name="difficulty" type="radio"/>
+<label class="flex-1 text-center py-sm rounded-full font-label-md cursor-pointer transition-all text-on-surface-variant" for="medium">Medium</label>
+<input class="hidden" id="hard" name="difficulty" type="radio"/>
+<label class="flex-1 text-center py-sm rounded-full font-label-md cursor-pointer transition-all text-on-surface-variant" for="hard">Hard</label>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-lg h-full">
+<div class="bg-secondary-container text-on-secondary-container p-lg rounded-xl h-full flex flex-col justify-between ai-glow">
+<div>
+<div class="flex items-center gap-xs mb-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-md uppercase tracking-widest">AI Config</span>
+</div>
+<p class="font-body-sm opacity-90">Our AI ensures cognitive alignment with Bloom's Taxonomy for balanced assessments.</p>
+</div>
+<button class="w-full mt-lg bg-white text-secondary font-bold py-md rounded-lg flex items-center justify-center gap-md hover:shadow-lg transition-all active:scale-95 group" id="generate-btn">
+<span>Generate Paper</span>
+<span class="material-symbols-outlined group-hover:rotate-12 transition-transform">spark</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Preview Area -->
+<section class="hidden space-y-lg animate-in fade-in duration-700" id="preview-section">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">visibility</span>
+                            Generated Preview
+                        </h2>
+<div class="flex gap-sm">
+<button class="flex items-center gap-xs px-md py-sm border border-outline-variant rounded-lg font-label-md hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">download</span>
+                                Export PDF
+                            </button>
+<button class="flex items-center gap-xs px-md py-sm border border-outline-variant rounded-lg font-label-md hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">print</span>
+                                Print
+                            </button>
+</div>
+</div>
+<div class="bg-white border border-outline-variant shadow-xl rounded-xl overflow-hidden">
+<!-- Paper Header -->
+<div class="p-xl border-b border-outline-variant bg-surface-container-low/30 text-center">
+<h3 class="font-headline-lg text-headline-lg text-primary uppercase mb-xs tracking-tighter" id="paper-subject">QUANTUM PHYSICS</h3>
+<p class="font-label-md text-on-surface-variant mb-lg" id="paper-topic">UNIT ASSESSMENT: SCHRODINGER EQUATION</p>
+<div class="flex justify-center gap-xl text-body-sm text-on-surface-variant border-t border-outline-variant/30 pt-md">
+<span class="flex items-center gap-xs"><span class="font-semibold text-primary">Time:</span> 60 Minutes</span>
+<span class="flex items-center gap-xs"><span class="font-semibold text-primary">Max Marks:</span> 50</span>
+<span class="flex items-center gap-xs"><span class="font-semibold text-primary">Questions:</span> 05</span>
+</div>
+</div>
+<!-- Questions List -->
+<div class="p-xl md:p-2xl space-y-xl">
+<div class="flex gap-lg group">
+<span class="font-headline-md text-secondary font-bold">01.</span>
+<div class="flex-1 border-b border-outline-variant/20 pb-lg">
+<div class="flex justify-between items-start mb-md">
+<h4 class="font-body-lg text-body-lg text-primary font-medium leading-relaxed">Derive the time-dependent Schrödinger equation from the fundamental principle of energy conservation in a quantum mechanical system.</h4>
+<span class="bg-surface-container-high px-md py-xs rounded font-label-sm text-on-surface-variant">10 Marks</span>
+</div>
+<div class="h-24 bg-surface/50 border border-dashed border-outline-variant rounded-lg flex items-center justify-center">
+<span class="text-on-surface-variant font-label-sm opacity-50 italic">Space for mathematical derivation...</span>
+</div>
+</div>
+</div>
+<div class="flex gap-lg group">
+<span class="font-headline-md text-secondary font-bold">02.</span>
+<div class="flex-1 border-b border-outline-variant/20 pb-lg">
+<div class="flex justify-between items-start mb-md">
+<h4 class="font-body-lg text-body-lg text-primary font-medium leading-relaxed">Explain the physical significance of the wave function ψ and the normalization condition. Why must ψ be continuous and single-valued?</h4>
+<span class="bg-surface-container-high px-md py-xs rounded font-label-sm text-on-surface-variant">10 Marks</span>
+</div>
+</div>
+</div>
+<div class="flex gap-lg group">
+<span class="font-headline-md text-secondary font-bold">03.</span>
+<div class="flex-1 border-b border-outline-variant/20 pb-lg">
+<div class="flex justify-between items-start mb-md">
+<h4 class="font-body-lg text-body-lg text-primary font-medium leading-relaxed">Apply the Schrödinger equation to a particle in a one-dimensional infinite potential well. Determine the allowed energy levels.</h4>
+<span class="bg-surface-container-high px-md py-xs rounded font-label-sm text-on-surface-variant">10 Marks</span>
+</div>
+</div>
+</div>
+<div class="flex gap-lg group">
+<span class="font-headline-md text-secondary font-bold">04.</span>
+<div class="flex-1 border-b border-outline-variant/20 pb-lg">
+<div class="flex justify-between items-start mb-md">
+<h4 class="font-body-lg text-body-lg text-primary font-medium leading-relaxed">Analyze the concept of quantum tunneling and calculate the transmission probability for a rectangular potential barrier.</h4>
+<span class="bg-surface-container-high px-md py-xs rounded font-label-sm text-on-surface-variant">10 Marks</span>
+</div>
+</div>
+</div>
+<div class="flex gap-lg group">
+<span class="font-headline-md text-secondary font-bold">05.</span>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-md">
+<h4 class="font-body-lg text-body-lg text-primary font-medium leading-relaxed">Discuss the differences between the time-independent and time-dependent Schrödinger equations. In what scenarios is the time-independent version sufficient?</h4>
+<span class="bg-surface-container-high px-md py-xs rounded font-label-sm text-on-surface-variant">10 Marks</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Paper Footer -->
+<div class="bg-surface-container-lowest p-md border-t border-outline-variant flex justify-between items-center px-xl">
+<span class="font-label-sm text-on-surface-variant">Generated by Academia AI Engine v4.2</span>
+<span class="font-label-sm text-on-surface-variant">Page 1 of 1</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-xl mt-2xl gap-md border-t border-outline-variant bg-surface">
+<div class="flex flex-col gap-xs">
+<span class="font-label-md text-label-md font-bold text-primary">Academia AI</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 Institute of Computational Intelligence. Powered by Gemini.</p>
+</div>
+<div class="flex gap-lg">
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-secondary transition-colors" href="#">Faculty Support</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-secondary transition-colors" href="#">Emergency Contacts</a>
+</div>
+</footer>
+<script>
+        const generateBtn = document.getElementById('generate-btn');
+        const previewSection = document.getElementById('preview-section');
+        const subjectInput = document.getElementById('subject-input');
+        const topicInput = document.getElementById('topic-input');
+        const paperSubject = document.getElementById('paper-subject');
+        const paperTopic = document.getElementById('paper-topic');
+
+        generateBtn.addEventListener('click', () => {
+            // Update preview titles
+            const sub = subjectInput.value || "Quantum Physics";
+            const top = topicInput.value || "Schrodinger Equation";
+            
+            paperSubject.textContent = sub;
+            paperTopic.textContent = `UNIT ASSESSMENT: ${top}`;
+
+            // Show loading state simulation
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = `
+                <span class="material-symbols-outlined animate-spin">sync</span>
+                <span>Generating...</span>
+            `;
+
+            setTimeout(() => {
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = `
+                    <span>Regenerate Paper</span>
+                    <span class="material-symbols-outlined">sparkles</span>
+                `;
+                previewSection.classList.remove('hidden');
+                previewSection.scrollIntoView({ behavior: 'smooth' });
+            }, 1500);
+        });
+
+        // Add small interaction for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+            btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+            btn.addEventListener('mouseleave', () => btn.classList.remove('scale-95'));
+        });
+    </script>
+</body></html>

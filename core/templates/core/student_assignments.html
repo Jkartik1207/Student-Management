@@ -1,0 +1,42 @@
+{% extends 'core/student_base.html' %}
+
+{% block content %}
+<section class="p-lg md:p-xl max-w-7xl mx-auto w-full flex-1">
+    <div class="mb-2xl">
+        <h1 class="font-headline-xl text-headline-xl text-primary mb-xs">Assignments</h1>
+        <p class="text-on-surface-variant font-body-lg text-body-lg">View and download your academic assignments.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-lg">
+        {% for assignment in assignments %}
+        <div class="bg-white p-xl rounded-2xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+            <div>
+                <div class="flex justify-between items-start mb-sm">
+                    <h3 class="font-headline-md text-headline-md text-primary">{{ assignment.title }}</h3>
+                    <span class="px-sm py-xs bg-surface-container text-on-surface-variant rounded text-label-sm">Due: {{ assignment.due_date|date:"M d" }}</span>
+                </div>
+                <p class="text-body-md text-on-surface-variant mb-md line-clamp-3">{{ assignment.description }}</p>
+                <div class="flex gap-md mb-lg">
+                    <span class="text-label-sm text-secondary bg-secondary/10 px-sm py-xs rounded">Max Marks: {{ assignment.max_marks }}</span>
+                </div>
+            </div>
+            
+            {% if assignment.assignment_file %}
+            <a href="{{ assignment.assignment_file.url }}" class="w-full py-sm border border-outline-variant rounded-lg text-center font-label-md text-primary hover:bg-surface-container-high transition-colors flex items-center justify-center gap-xs" download>
+                <span class="material-symbols-outlined">download</span> Download File
+            </a>
+            {% else %}
+            <button class="w-full py-sm border border-outline-variant rounded-lg text-center font-label-md text-outline cursor-not-allowed" disabled>
+                No File Attached
+            </button>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="col-span-1 lg:col-span-2 text-center p-2xl bg-white rounded-2xl border border-outline-variant">
+            <span class="material-symbols-outlined text-4xl text-outline mb-sm">assignment</span>
+            <p class="text-on-surface-variant text-body-lg">No assignments posted yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

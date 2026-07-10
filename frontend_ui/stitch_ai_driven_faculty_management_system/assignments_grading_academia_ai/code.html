@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Academia AI | Assignment Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#8293b8",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "tertiary-container": "#292c2e",
+                    "secondary": "#4b41e1",
+                    "inverse-primary": "#b6c6ef",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "on-surface-variant": "#44474e",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "on-tertiary-fixed": "#191c1e",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-primary-fixed-variant": "#364768",
+                    "surface-container-high": "#dce9ff",
+                    "background": "#f8f9ff",
+                    "surface": "#f8f9ff",
+                    "on-background": "#0b1c30",
+                    "tertiary-fixed": "#e0e3e5",
+                    "outline-variant": "#c5c6cf",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#081b3a",
+                    "surface-container-low": "#eff4ff",
+                    "primary-fixed": "#d8e2ff",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-tint": "#4e5e81",
+                    "primary-container": "#1a2b4b",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary": "#141819",
+                    "primary-fixed-dim": "#b6c6ef",
+                    "on-secondary-fixed": "#0f0069",
+                    "outline": "#75777f",
+                    "inverse-surface": "#213145",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary-container": "#fffbff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container": "#e5eeff",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#3323cc",
+                    "secondary-fixed-dim": "#c3c0ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "primary": "#031635",
+                    "surface-bright": "#f8f9ff",
+                    "secondary-container": "#645efb",
+                    "on-tertiary-container": "#909395",
+                    "secondary-fixed": "#e2dfff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "gutter": "24px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "sm": "8px",
+                    "2xl": "48px",
+                    "md": "16px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Geist"],
+                    "label-sm": ["Geist"],
+                    "headline-xl": ["Geist"],
+                    "label-md": ["Geist"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "14px", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ai-glow {
+            box-shadow: 0 0 20px rgba(75, 65, 225, 0.1);
+            background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="flex flex-col h-screen w-64 fixed left-0 top-0 py-lg px-md gap-sm bg-surface-container-low dark:bg-tertiary-container shadow-sm z-50">
+<div class="px-md mb-xl">
+<h1 class="font-headline-sm text-headline-sm font-semibold text-primary dark:text-primary-fixed">Faculty Portal</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Modern Academic Suite</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Students</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary text-on-secondary rounded-lg font-medium shadow-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment</span>
+<span class="font-label-md text-label-md">Assignments</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">construction</span>
+<span class="font-label-md text-label-md">Academic Tools</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-label-md text-label-md">Communication</span>
+</a>
+</nav>
+<div class="mt-auto space-y-1">
+<button class="w-full flex items-center justify-center gap-sm bg-primary-container text-on-primary-container py-sm rounded-lg hover:opacity-90 transition-all font-label-md mb-md">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+                Gemini Insights
+            </button>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 h-screen flex flex-col overflow-hidden">
+<!-- Top Navigation -->
+<header class="flex justify-between items-center w-full px-lg py-md sticky top-0 z-40 bg-surface/95 backdrop-blur-sm border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-xl">
+<h2 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">Academia AI</h2>
+<div class="flex gap-lg">
+<button class="font-label-md text-label-md text-secondary font-bold border-b-2 border-secondary pb-1 transition-all" id="tab-create" onclick="switchTab('create')">Create New</button>
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors duration-200 pb-1" id="tab-submissions" onclick="switchTab('submissions')">Submissions</button>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative group">
+<span class="absolute inset-y-0 left-3 flex items-center text-outline">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary w-64 transition-all" placeholder="Search assignments..." type="text"/>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="bg-primary-container text-white px-md py-2 rounded-lg font-label-md flex items-center gap-sm hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">spark</span>
+                    AI Chat
+                </button>
+<img class="w-10 h-10 rounded-full border-2 border-surface shadow-sm object-cover" data-alt="A professional headshot of a middle-aged university faculty member with glasses, wearing a smart casual blazer, looking confident and friendly. The lighting is bright and academic, with a soft-focus background of a university library with wooden shelves. The style is clean, sharp, and modern, reflecting an institutional and high-intelligence environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoDQx2Vu3LSrynueZnF9bR6qoAh3_Zhj0JKOLdryPLI-KU2P-uLTwsJGuxKeFNmDa17t7I05vpRZ6fGdW2nVCEjKGiCAN4Fskkm6t4zNwGArPqj59HtTAwX0YiQxNHLN2z-lx0gWCJ9yUz-PUd2B3glZmIETS3myimw4FE-BRxF8-Tt40cr_7ykL75e0vPANVl1Xebmj9svF0zdJ9-bxWVPI9psxPkUrS9C8cWeOwPwtEJ-x9DYKghzJTFaS1Je_X5jwvHe2zQBlRz"/>
+</div>
+</header>
+<!-- Dynamic Content Area -->
+<div class="flex-1 overflow-y-auto p-xl custom-scrollbar">
+<!-- Create New Assignment Section -->
+<section class="max-w-5xl mx-auto space-y-xl" id="section-create">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-primary">Assignment Designer</h3>
+<p class="text-on-surface-variant">Design curriculum modules with manual control or AI-assisted intelligence.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Settings -->
+<div class="lg:col-span-8 space-y-lg">
+<div class="bg-white border border-outline-variant p-lg rounded-xl shadow-sm">
+<!-- Toggle Header -->
+<div class="flex items-center justify-between mb-lg bg-surface-container-low p-2 rounded-lg border border-outline-variant/30">
+<button class="flex-1 py-3 rounded-md flex items-center justify-center gap-sm transition-all bg-white shadow-sm text-secondary font-semibold" id="toggle-ai" onclick="switchMethod('ai')">
+<span class="material-symbols-outlined">auto_awesome</span>
+                                    AI Generated
+                                </button>
+<button class="flex-1 py-3 rounded-md flex items-center justify-center gap-sm transition-all text-on-surface-variant" id="toggle-manual" onclick="switchMethod('manual')">
+<span class="material-symbols-outlined">description</span>
+                                    Manual / Upload
+                                </button>
+</div>
+<!-- AI Method Content -->
+<div class="space-y-md animate-in fade-in duration-500" id="method-ai">
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface-variant">Topic or Learning Objective</label>
+<input class="w-full p-md bg-surface-bright border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all" placeholder="e.g. Introduction to Quantum Computing &amp; Error Correction" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface-variant">Complexity Level</label>
+<select class="w-full p-md bg-surface-bright border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary">
+<option>Undergraduate (Level 1)</option>
+<option>Graduate (Advanced)</option>
+<option>Post-Doctoral Seminar</option>
+</select>
+</div>
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface-variant">Output Format</label>
+<select class="w-full p-md bg-surface-bright border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary">
+<option>Comparative Essay</option>
+<option>Problem Set</option>
+<option>Research Proposal</option>
+</select>
+</div>
+</div>
+<div class="pt-md">
+<button class="w-full bg-secondary text-on-secondary py-lg rounded-lg font-semibold flex items-center justify-center gap-md hover:bg-secondary/90 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined">bolt</span>
+                                        Generate Assignment via Gemini
+                                    </button>
+</div>
+</div>
+<!-- Manual Method Content (Hidden by default) -->
+<div class="hidden space-y-md animate-in fade-in duration-500" id="method-manual">
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface-variant">Assignment Description</label>
+<textarea class="w-full p-md bg-surface-bright border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary transition-all" placeholder="Paste your assignment brief here..." rows="6"></textarea>
+</div>
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-xl text-center bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[48px] text-outline group-hover:text-secondary transition-colors">cloud_upload</span>
+<p class="font-body-md mt-sm">Click to upload or drag files here</p>
+<p class="text-on-surface-variant text-label-sm">PDF, DOCX, or LaTeX (Max 25MB)</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Sidebar Insight -->
+<div class="lg:col-span-4 space-y-lg">
+<div class="ai-glow border border-secondary/20 p-lg rounded-xl">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h4 class="font-label-md text-primary font-bold">AI DESIGN INSIGHT</h4>
+</div>
+<p class="text-body-sm text-on-surface-variant leading-relaxed">
+                                Our analysis shows that modules combining <span class="text-secondary font-medium">Comparative Logic</span> with <span class="text-secondary font-medium">Open-ended Research</span> result in 22% higher engagement scores for this semester's cohort.
+                            </p>
+<div class="mt-lg pt-lg border-t border-secondary/10 flex items-center justify-between">
+<span class="text-label-sm text-on-surface-variant">Cohort Maturity Score</span>
+<span class="text-secondary font-bold">8.4/10</span>
+</div>
+</div>
+<div class="bg-white border border-outline-variant p-lg rounded-xl">
+<h4 class="font-label-md text-on-surface-variant mb-md">PREVIEW</h4>
+<div class="w-full h-40 rounded bg-surface-container-low flex items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center opacity-40" data-alt="A clean, minimalist 3D rendering of a stack of papers and a glowing digital pen. The papers are translucent white, illuminated by a soft indigo light emanating from the pen. The background is a pale, neutral gray. The overall mood is professional, academic, and technologically forward-looking, with high-quality global illumination and soft shadows." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAi26UAetLDO-b-RLvB32XhXHKOS6FJMnXiJ3_zk9ydmHfsdJ87aI8KdyWePPRQgyw3NiFBVcyEjs65gFBEXZjt0G66boUqMYxE46Votuwtwry1aY9qikAmJ0tPO6xhM0NTDKzpVwxZBdlmvtnuer8ZpOEmjyY6bk5XkkKe2FSRDqiP0MDyeT0sb9krDckDgj8OrainzNrUtauVVdahDFTE5RfVa-net7oA3w8dyQF3XtG3HD9XGU5ETYkXAjKydKJKOLkOQvceoSMX')"></div>
+<span class="relative z-10 text-on-surface-variant text-label-sm italic">Live Preview Generation...</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Submissions Section (Hidden by default) -->
+<section class="hidden max-w-5xl mx-auto space-y-xl" id="section-submissions">
+<div class="flex justify-between items-center">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-primary">Student Submissions</h3>
+<p class="text-on-surface-variant">Reviewing: "Theoretical Frameworks of Neural Networks"</p>
+</div>
+<div class="flex gap-md">
+<button class="bg-surface-container-high px-md py-2 rounded-lg font-label-md flex items-center gap-sm hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                            Export Grades
+                        </button>
+</div>
+</div>
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#F8FAFC]">
+<tr>
+<th class="px-lg py-md font-label-sm text-on-surface-variant uppercase tracking-wider">Student Name</th>
+<th class="px-lg py-md font-label-sm text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="px-lg py-md font-label-sm text-on-surface-variant uppercase tracking-wider">Submitted Date</th>
+<th class="px-lg py-md font-label-sm text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Student Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="A headshot of a male university student in his early 20s, wearing a simple gray t-shirt. He has a focused and studious expression. The lighting is natural and bright, in a modern academic setting. Professional photography style with a shallow depth of field, highlighting the student against a blurred campus building." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7_aUUITEiHMpxsejkSwDFGqJugpmauxFNUy_OvBwfkGCL2NXxHyevAL4lNguxMaKvA19gPDyGe9oWvVqnh5DT8AMRZNc3fUnu7yw8w8wv4De0otMvlxYAJv1LXioEOGVBNrTiRsz3GzNMXGeCkoiVlkA2viE9a-o64G8eLRfPXlC4tvSltIJUgzYaxqOgTaQzBL43XbOoou9ImPMiC-DsUCh_6GMJoRQyfhfCoAtstRqlmdUOihKw_ISb3cmq0yh5AyEiUCA2jXIE"/>
+<span class="font-medium text-primary">Alexander Thorne</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="px-2 py-1 bg-green-100 text-green-800 text-[10px] font-bold uppercase rounded">Completed</span>
+</td>
+<td class="px-lg py-md text-on-surface-variant font-body-sm">Oct 14, 2024</td>
+<td class="px-lg py-md text-right">
+<button class="bg-primary text-white px-md py-2 rounded-lg font-label-sm hover:opacity-90 active:scale-95 transition-all" onclick="evaluateAI('Alexander Thorne')">
+                                        AI Evaluate
+                                    </button>
+</td>
+</tr>
+<!-- Student Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="A headshot of a female university student in her early 20s, with long dark hair, wearing a navy blue hoodie. She is smiling gently at the camera. The setting is a brightly lit, modern student lounge with wood paneling in the background. Crisp, professional lighting with a soft bokeh effect." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAL8UN7LlVTJCqLoEktFqnbZ87MVrF2KPH3yzhrwaSDs4H7jbp_45etz_oDm4H6EHh5OINtewwUrWaKpJ8DPeck5msRaUM_pwJXnbusaAEodX4WjXPZqtizBZ4D_YC8QnZvxcCoXIQnL971qjj5UMPY0WsrhdYa6x92M39hPLnr4-xBrbo75nL0MCepojJTSMbMLJQO6-df_i6f6zo2R3Jn7UBqzs-ayJ2GjC-z1MeH4v-MEd5clzuinRV1KI9vMsZ4vHmLnfAAE7tg"/>
+<span class="font-medium text-primary">Elena Rodriguez</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="px-2 py-1 bg-green-100 text-green-800 text-[10px] font-bold uppercase rounded">Completed</span>
+</td>
+<td class="px-lg py-md text-on-surface-variant font-body-sm">Oct 15, 2024</td>
+<td class="px-lg py-md text-right">
+<button class="bg-primary text-white px-md py-2 rounded-lg font-label-sm hover:opacity-90 active:scale-95 transition-all" onclick="evaluateAI('Elena Rodriguez')">
+                                        AI Evaluate
+                                    </button>
+</td>
+</tr>
+<!-- Student Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="A close-up portrait of a diverse male graduate student with a beard, wearing a classic white oxford shirt. He is looking thoughtfully slightly away from the camera. The environment is an upscale, high-tech lab with cool blue accent lighting. The style is professional, sharp, and reflects modern academic rigor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPfIX2j5GGycXqlrL1mj8ND0o_RUhXBMzKskqZmFw4-Nsct2xQvi_9pAslXnu5phNN8g2I6DxPO-dRP6y7yRtn1qTyiUxSWugbf-0M0DFogb2SgZLnfFhxyE_BG94Mrk2asod-NyujNjg1naWHt35sq-SUF-4YgMZwHlsAaUoZQ-vysF1W7jeJ9RdamZWKouRZSLvMAPKDuPeMJQ_VzFfvQc4maa2voDR21537EffQSJsqulC-9I2LNbiRJF8R91sjH1DzNSj0RMkv"/>
+<span class="font-medium text-primary">Marcus Chen</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="px-2 py-1 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold uppercase rounded">Pending AI</span>
+</td>
+<td class="px-lg py-md text-on-surface-variant font-body-sm">Oct 15, 2024</td>
+<td class="px-lg py-md text-right">
+<button class="bg-primary text-white px-md py-2 rounded-lg font-label-sm hover:opacity-90 active:scale-95 transition-all" onclick="evaluateAI('Marcus Chen')">
+                                        AI Evaluate
+                                    </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- AI Evaluation Overlay / Section -->
+<div class="hidden animate-in slide-in-from-bottom-4 duration-500 bg-white border-2 border-secondary/30 p-lg rounded-2xl ai-glow relative" id="evaluation-result">
+<button class="absolute top-4 right-4 text-on-surface-variant hover:text-error transition-colors" onclick="closeEvaluation()">
+<span class="material-symbols-outlined">close</span>
+</button>
+<div class="flex items-start gap-lg">
+<div class="flex-shrink-0 w-24 h-24 bg-primary text-white rounded-xl flex flex-col items-center justify-center shadow-lg">
+<span class="font-label-sm uppercase opacity-70">Grade</span>
+<span class="text-headline-lg font-bold" id="eval-grade">A-</span>
+</div>
+<div class="space-y-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h4 class="font-headline-md text-primary">AI Evaluation for <span id="eval-student-name">...</span></h4>
+</div>
+<p class="text-body-md text-on-surface-variant leading-relaxed" id="eval-feedback">
+                                The submission demonstrates a robust understanding of transformer architecture and its limitations. The critique of gradient descent optimization shows high-level synthesis, though the conclusion could be bolstered with more empirical data references. Citations are impeccable.
+                            </p>
+<div class="flex gap-md">
+<button class="bg-secondary text-white px-lg py-2 rounded-lg font-label-md hover:bg-secondary/90 transition-all">Finalize &amp; Post</button>
+<button class="bg-surface-container-low text-primary px-lg py-2 rounded-lg font-label-md border border-outline-variant hover:bg-surface-container-high transition-all">Edit Feedback</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-md bg-surface border-t border-outline-variant dark:border-outline z-30">
+<div class="flex items-center gap-sm">
+<span class="font-label-md text-label-md font-bold text-primary">Academia AI</span>
+<span class="text-on-surface-variant dark:text-on-tertiary-fixed-variant text-label-sm">| © 2024 Institute of Computational Intelligence.</span>
+</div>
+<div class="flex gap-lg">
+<a class="text-on-surface-variant dark:text-on-tertiary-fixed-variant font-label-sm hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-fixed-variant font-label-sm hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-fixed-variant font-label-sm hover:text-secondary transition-colors" href="#">Faculty Support</a>
+</div>
+</footer>
+</main>
+<script>
+        function switchTab(tab) {
+            const createSection = document.getElementById('section-create');
+            const submissionsSection = document.getElementById('section-submissions');
+            const tabCreate = document.getElementById('tab-create');
+            const tabSubmissions = document.getElementById('tab-submissions');
+
+            if (tab === 'create') {
+                createSection.classList.remove('hidden');
+                submissionsSection.classList.add('hidden');
+                tabCreate.className = 'font-label-md text-label-md text-secondary font-bold border-b-2 border-secondary pb-1 transition-all';
+                tabSubmissions.className = 'font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors duration-200 pb-1';
+            } else {
+                createSection.classList.add('hidden');
+                submissionsSection.classList.remove('hidden');
+                tabSubmissions.className = 'font-label-md text-label-md text-secondary font-bold border-b-2 border-secondary pb-1 transition-all';
+                tabCreate.className = 'font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors duration-200 pb-1';
+            }
+        }
+
+        function switchMethod(method) {
+            const aiBtn = document.getElementById('toggle-ai');
+            const manualBtn = document.getElementById('toggle-manual');
+            const aiContent = document.getElementById('method-ai');
+            const manualContent = document.getElementById('method-manual');
+
+            if (method === 'ai') {
+                aiContent.classList.remove('hidden');
+                manualContent.classList.add('hidden');
+                aiBtn.className = 'flex-1 py-3 rounded-md flex items-center justify-center gap-sm transition-all bg-white shadow-sm text-secondary font-semibold';
+                manualBtn.className = 'flex-1 py-3 rounded-md flex items-center justify-center gap-sm transition-all text-on-surface-variant';
+            } else {
+                aiContent.classList.add('hidden');
+                manualContent.classList.remove('hidden');
+                manualBtn.className = 'flex-1 py-3 rounded-md flex items-center justify-center gap-sm transition-all bg-white shadow-sm text-secondary font-semibold';
+                aiBtn.className = 'flex-1 py-3 rounded-md flex items-center justify-center gap-sm transition-all text-on-surface-variant';
+            }
+        }
+
+        function evaluateAI(studentName) {
+            const evalSection = document.getElementById('evaluation-result');
+            const nameEl = document.getElementById('eval-student-name');
+            const gradeEl = document.getElementById('eval-grade');
+            const feedbackEl = document.getElementById('eval-feedback');
+
+            const mockData = {
+                'Alexander Thorne': { grade: 'A', text: "Alexander's work on neural network convergence shows exceptional depth. His analysis of stochastic gradient descent dynamics is particularly insightful, providing clear mathematical proofs alongside intuitive explanations." },
+                'Elena Rodriguez': { grade: 'B+', text: "Elena provides a very strong structural overview. The comparative analysis between LSTM and GRU architectures is well-executed, though more attention could be paid to recent attention-mechanism breakthroughs." },
+                'Marcus Chen': { grade: 'A-', text: "Marcus demonstrates a profound grasp of ethical implications in AI deployment. His discussion on algorithmic bias is balanced and extremely well-researched, citing contemporary case studies with high precision." }
+            };
+
+            const data = mockData[studentName] || mockData['Alexander Thorne'];
+
+            nameEl.textContent = studentName;
+            gradeEl.textContent = data.grade;
+            feedbackEl.textContent = data.text;
+
+            evalSection.classList.remove('hidden');
+            evalSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function closeEvaluation() {
+            document.getElementById('evaluation-result').classList.add('hidden');
+        }
+    </script>
+</body></html>

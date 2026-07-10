@@ -1,0 +1,83 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="flex-1 overflow-y-auto p-xl custom-scrollbar">
+    <section class="max-w-5xl mx-auto space-y-xl" id="section-submissions">
+        <div class="flex justify-between items-center">
+            <div>
+                <h3 class="font-headline-lg text-headline-lg text-primary">Student Submissions</h3>
+                <p class="text-on-surface-variant">Reviewing: "{{ assignment.title }}"</p>
+            </div>
+            <div class="flex gap-md">
+                <button class="bg-surface-container-high px-md py-2 rounded-lg font-label-md flex items-center gap-sm hover:bg-surface-container-highest transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">download</span> Export Grades
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-[#F8FAFC]">
+                    <tr>
+                        <th class="px-lg py-md font-label-sm text-on-surface-variant uppercase tracking-wider">Student Name</th>
+                        <th class="px-lg py-md font-label-sm text-on-surface-variant uppercase tracking-wider">Status</th>
+                        <th class="px-lg py-md font-label-sm text-on-surface-variant uppercase tracking-wider">Submitted Date</th>
+                        <th class="px-lg py-md font-label-sm text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant">
+                    {% for sub in submissions %}
+                    <tr class="hover:bg-surface-container-low transition-colors group">
+                        <td class="px-lg py-md">
+                            <div class="flex items-center gap-md">
+                                <div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-xs">{{ sub.student.name|make_list|first }}</div>
+                                <span class="font-medium text-primary">{{ sub.student.name }}</span>
+                            </div>
+                        </td>
+                        <td class="px-lg py-md">
+                            {% if sub.is_evaluated %}
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-[10px] font-bold uppercase rounded">Completed</span>
+                            {% else %}
+                            <span class="px-2 py-1 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold uppercase rounded">Pending AI</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-lg py-md text-on-surface-variant font-body-sm">{{ sub.submitted_at|date }}</td>
+                        <td class="px-lg py-md text-right">
+                            <form method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="submission_id" value="{{ sub.id }}">
+                                <button type="submit" class="bg-primary text-white px-md py-2 rounded-lg font-label-sm hover:opacity-90 active:scale-95 transition-all">
+                                    AI Evaluate
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% if sub.is_evaluated %}
+                    <tr class="bg-surface-container-lowest">
+                        <td colspan="4" class="px-lg py-md border-t border-outline-variant/30">
+                            <div class="p-md rounded-lg border border-secondary/30 bg-surface ai-glow flex items-start gap-md">
+                                <div class="flex-shrink-0 w-16 h-16 bg-primary text-white rounded-lg flex flex-col items-center justify-center">
+                                    <span class="font-label-sm uppercase opacity-70">Marks</span>
+                                    <span class="text-title-lg font-bold">{{ sub.marks_awarded }}</span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-sm mb-xs">
+                                        <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                                        <h4 class="font-label-md text-primary font-bold">AI Feedback</h4>
+                                    </div>
+                                    <p class="text-body-sm text-on-surface-variant">{{ sub.ai_feedback }}</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-lg py-xl text-center text-on-surface-variant">No submissions yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,296 @@
+{% extends "core/base.html" %}
+{% block content %}
+<!-- Content Area -->
+<div class="p-lg md:p-xl space-y-xl max-w-7xl mx-auto w-full">
+<!-- Page Header & Batch Selector -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-lg">
+<div class="space-y-sm">
+<h2 class="font-headline-xl text-headline-xl text-primary">Attendance Analytics</h2>
+<p class="text-body-lg text-on-surface-variant max-w-2xl">Leverage Gemini AI to identify engagement patterns and proactively support student success.</p>
+</div>
+<div class="flex flex-col gap-xs min-w-[280px]">
+<form method="POST">
+{% csrf_token %}
+<label class="font-label-sm text-on-surface-variant px-sm">Select Student Batch</label>
+<div class="relative">
+<select name="batch" onchange="this.form.submit()" class="w-full appearance-none bg-surface border border-outline-variant rounded-xl px-md py-md font-body-md text-on-surface focus:border-secondary focus:ring-0 cursor-pointer">
+<option value="All">All Batches</option>
+{% for b in batches %}
+<option value="{{ b }}" {% if selected_batch == b %}selected{% endif %}>{{ b }}</option>
+{% endfor %}
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">expand_more</span>
+</div>
+</form>
+</div>
+</section>
+<!-- Main Dashboard Grid (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- AI Summary Card -->
+<div class="md:col-span-8 ai-insight-glow border border-secondary/20 rounded-2xl p-lg relative overflow-hidden">
+<div class="flex items-center gap-sm mb-lg">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">spark</span>
+<h3 class="font-headline-md text-headline-md text-primary">AI Analytics Report</h3>
+<span class="ml-auto text-label-sm bg-secondary/10 text-secondary px-sm py-xs rounded-full">Powered by Gemini Pro</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-lg mb-xl">
+<div class="space-y-xs">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider">Avg. Attendance</span>
+<div class="flex items-baseline gap-xs">
+<span class="text-headline-lg font-bold">84.2%</span>
+<span class="text-error text-body-sm flex items-center">
+<span class="material-symbols-outlined text-sm">arrow_downward</span> 2.1%
+                                </span>
+</div>
+</div>
+<div class="space-y-xs">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider">Engagement Score</span>
+<div class="flex items-baseline gap-xs">
+<span class="text-headline-lg font-bold">High</span>
+<span class="text-on-surface-variant text-body-sm italic">Stable</span>
+</div>
+</div>
+<div class="space-y-xs">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider">At-Risk Students</span>
+<div class="flex items-baseline gap-xs">
+<span class="text-headline-lg font-bold text-error">12</span>
+<span class="text-on-surface-variant text-body-sm">out of 48</span>
+</div>
+</div>
+</div>
+<div class="bg-white/50 rounded-xl p-md border border-outline-variant/30 text-body-md text-on-surface-variant space-y-md markdown-content">
+{% if analytics_report %}
+{{ analytics_report|safe }}
+{% else %}
+<p>Select a batch to generate an AI summary.</p>
+{% endif %}
+</div>
+</div>
+<!-- Small Metric Widget -->
+<div class="md:col-span-4 bg-primary text-on-primary rounded-2xl p-lg flex flex-col justify-between">
+<div>
+<h4 class="font-label-md text-label-md text-primary-fixed/70 uppercase">Top Performer</h4>
+<p class="font-headline-md mt-sm leading-tight">Sarah Chen has 100% attendance streak</p>
+</div>
+<button class="mt-lg w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white py-sm rounded-lg font-label-md transition-colors">
+                        View Student Profile
+                    </button>
+</div>
+<!-- Trends Chart Canvas Placeholder -->
+<div class="md:col-span-12 lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-2xl p-lg h-96">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-label-md text-on-surface">Weekly Attendance Trends</h3>
+<div class="flex gap-sm">
+<button class="px-md py-xs bg-surface-container-high rounded-full text-label-sm">Day</button>
+<button class="px-md py-xs bg-primary text-on-primary rounded-full text-label-sm">Week</button>
+<button class="px-md py-xs bg-surface-container-high rounded-full text-label-sm">Month</button>
+</div>
+</div>
+<!-- Mock Chart Visualization -->
+<div class="relative w-full h-64 flex items-end gap-md pt-lg">
+<div class="flex-1 bg-surface-container-highest rounded-t-lg h-[60%] relative group">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-primary text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">78%</div>
+</div>
+<div class="flex-1 bg-surface-container-highest rounded-t-lg h-[82%] relative group">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-primary text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">82%</div>
+</div>
+<div class="flex-1 bg-secondary rounded-t-lg h-[95%] relative group shadow-lg shadow-secondary/20">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-primary text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">95%</div>
+</div>
+<div class="flex-1 bg-surface-container-highest rounded-t-lg h-[75%] relative group">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-primary text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">75%</div>
+</div>
+<div class="flex-1 bg-surface-container-highest rounded-t-lg h-[68%] relative group">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-primary text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">68%</div>
+</div>
+<div class="flex-1 bg-surface-container-highest rounded-t-lg h-[88%] relative group">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-primary text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">88%</div>
+</div>
+</div>
+<div class="flex justify-between mt-md px-2 text-label-sm text-on-surface-variant">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+</div>
+</div>
+<!-- At-Risk Student Analysis -->
+<div class="md:col-span-12 lg:col-span-5 bg-surface border border-outline-variant rounded-2xl flex flex-col h-96">
+<div class="p-lg border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-primary">At-Risk Analysis</h3>
+<span class="text-label-sm text-on-surface-variant">12 flagged</span>
+</div>
+<div class="overflow-y-auto p-md space-y-md flex-1 scroll-hide">
+<!-- Student Item 1 -->
+<div class="p-md rounded-xl border border-outline-variant hover:border-secondary transition-all group">
+<div class="flex items-center gap-md mb-sm">
+<div class="w-10 h-10 rounded-full bg-cover bg-center" data-alt="A professional student portrait of a young male with a serious expression, shot in a high-quality studio lighting style with a clean white background, reflecting a focused academic environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDBoJjLNf0vCu6Vlg_1dnRi5ybwgWB7ckAUtYbchmbVNLXMhfpB8lMydR76lhBWWWGVuZiz-WUbBXJ3CviczDmesLiKmDYATXyvtr0VMmGnAJr9vWmzKQ2bNQNtHIh41iVoeL53MA374hHCm3tSnB4j_f5VINfK23GYsHBv6aVcvaoV017YKDppu889cC8vaokgx-aOl_cIG3cqUkKt0gFjYNf0HT9xrjlkNEQ0U7kTZJ_mID86ZPrCt_cc13SGi_R1HvntMivJFJWW')"></div>
+<div>
+<h4 class="font-label-md text-on-surface">Marcus Thorne</h4>
+<span class="text-label-sm text-error font-semibold">62% Attendance</span>
+</div>
+<button class="ml-auto p-xs rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-md">more_vert</span>
+</button>
+</div>
+<div class="bg-surface-container-low p-sm rounded-lg text-body-sm text-on-surface-variant border-l-4 border-secondary">
+<p><strong>Intervention:</strong> "Marcus missed the last 3 labs. Send a 'Check-in' email today. AI predicts a 70% chance of course failure if trend continues."</p>
+</div>
+<div class="mt-md flex gap-sm">
+<button class="flex-1 bg-primary text-on-primary py-xs rounded-md text-label-sm hover:opacity-90">Send Email</button>
+<button class="flex-1 border border-outline-variant py-xs rounded-md text-label-sm hover:bg-surface-container">Log Note</button>
+</div>
+</div>
+<!-- Student Item 2 -->
+<div class="p-md rounded-xl border border-outline-variant hover:border-secondary transition-all">
+<div class="flex items-center gap-md mb-sm">
+<div class="w-10 h-10 rounded-full bg-cover bg-center" data-alt="A portrait of a young female student with thoughtful eyes and a professional demeanor, photographed with warm ambient lighting in a library setting, creating a soft, sophisticated academic feel." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDgWb1qiraXrzPgG5_sXxDwKwoQmijyie9jydfrnOabP202_06ZtttTkc8-3eioioUp4gDgxmacYG14bf4tTiBfXXhw26z44x6HEmOjiWCLt5SF6C1xHk588c1mZbAtkhuQFZpxQX3-59bSBG0UIkUrethaXG-_dIhPGRImkCLT7I3Fr6V_HpHov9pXUbs8gJG7O3vQwx6ccGcHHLwAYpQb8ecBMT1WaXVWsa0ZS1Hw1Ki2o_fIBQwHmwUZNnlcgEmIiAY9XhWzshfw')"></div>
+<div>
+<h4 class="font-label-md text-on-surface">Lydia Rodriguez</h4>
+<span class="text-label-sm text-on-surface-variant font-semibold">74% Attendance</span>
+</div>
+<button class="ml-auto p-xs rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-md">more_vert</span>
+</button>
+</div>
+<div class="bg-surface-container-low p-sm rounded-lg text-body-sm text-on-surface-variant">
+<p><strong>Intervention:</strong> "Sudden drop from 90% to 74%. Likely external factor. Recommend scheduling an office hour session."</p>
+</div>
+</div>
+<!-- Student Item 3 -->
+<div class="p-md rounded-xl border border-outline-variant hover:border-secondary transition-all">
+<div class="flex items-center gap-md mb-sm">
+<div class="w-10 h-10 rounded-full bg-cover bg-center" data-alt="A close-up portrait of a young male student wearing a modern sweater, looking directly at the camera with a calm expression, professional studio lighting against a soft grey background for a modern institutional look." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCY2txwvaXoEx62pTH1XEp17O1m66xo4a9db1B2ZmvI1zPzeLa9clbcLlmAKl_jUKlwxHQ0LE-Gx6eojZ-OGXa_ZkJSUhtdfXWLduqa8Kx5HBg-0sFYmnLgNTo8gi6saIZhDTVJlTFmRmunn36K1KR5UI_sHcFyHEu48CM3VN8k6rCp88_BtzH5rn7NkRR96MBqZF-yUDQhdHD14cuzM2oSOKWyAvCOzUvnnWIxP9zm_EMvTtdgucf0F73ghCSJXuWJ_K9xUshgAyhL')"></div>
+<div>
+<h4 class="font-label-md text-on-surface">Julian Vane</h4>
+<span class="text-label-sm text-error font-semibold">58% Attendance</span>
+</div>
+<button class="ml-auto p-xs rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-md">more_vert</span>
+</button>
+</div>
+<div class="bg-surface-container-low p-sm rounded-lg text-body-sm text-on-surface-variant">
+<p><strong>Intervention:</strong> "Inconsistent attendance specifically for morning sessions. Suggest remote participation options."</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Batch Table Section -->
+<section class="bg-surface border border-outline-variant rounded-2xl overflow-hidden shadow-sm">
+<div class="p-lg border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+<h3 class="font-headline-md text-primary">Batch Enrollment List</h3>
+<div class="flex gap-md">
+<button class="flex items-center gap-xs px-md py-sm border border-outline-variant rounded-lg text-label-md hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-md">download</span> Export
+                        </button>
+<button class="flex items-center gap-xs px-md py-sm bg-secondary text-on-secondary rounded-lg text-label-md hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-md">person_add</span> Add Student
+                        </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-variant/20 border-b border-outline-variant">
+<th class="p-md font-label-sm text-on-surface-variant uppercase">Student</th>
+<th class="p-md font-label-sm text-on-surface-variant uppercase">Status</th>
+<th class="p-md font-label-sm text-on-surface-variant uppercase">Attendance %</th>
+<th class="p-md font-label-sm text-on-surface-variant uppercase">Last Seen</th>
+<th class="p-md font-label-sm text-on-surface-variant uppercase">AI Forecast</th>
+<th class="p-md font-label-sm text-on-surface-variant uppercase">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+{% for s in students %}
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md text-on-surface-variant font-label-sm w-12 text-center">{{ forloop.counter }}</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex-shrink-0 flex items-center justify-center font-bold text-primary text-xs">
+{{ s.name|make_list|first }}
+</div>
+<div>
+<p class="font-body-md text-on-surface font-medium">{{ s.name }}</p>
+<p class="text-label-sm text-on-surface-variant">Roll: {{ s.roll_number }}</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md hidden sm:table-cell">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-body-sm text-on-surface-variant">Active</span>
+</div>
+</td>
+<td class="px-lg py-md text-right">
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors group-hover:text-secondary">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- Footer Anchor -->
+<footer class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-xl mt-auto gap-md border-t border-outline-variant dark:border-outline">
+<div class="flex flex-col gap-xs">
+<span class="font-label-md text-label-md font-bold text-primary">Academia AI</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-on-tertiary-fixed-variant">© 2024 Institute of Computational Intelligence. Powered by Gemini.</p>
+</div>
+<div class="flex gap-lg flex-wrap justify-center">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Faculty Support</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Emergency Contacts</a>
+</div>
+</footer>
+
+<!-- Mobile Navigation (BottomNavBar) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface shadow-[0_-4px_12px_rgba(0,0,0,0.05)] flex justify-around items-center py-sm z-50 px-md">
+<a class="flex flex-col items-center gap-xs text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px]">Dashboard</span>
+</a>
+<a class="flex flex-col items-center gap-xs text-secondary font-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="text-[10px]">Reports</span>
+</a>
+<a class="flex flex-col items-center gap-xs text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px]">Students</span>
+</a>
+<a class="flex flex-col items-center gap-xs text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">spark</span>
+<span class="text-[10px]">AI Chat</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions for dropdowns and interactions
+        document.querySelector('select').addEventListener('change', function(e) {
+            // Simulated loading state for the AI Dashboard
+            const insightCard = document.querySelector('.ai-insight-glow');
+            insightCard.style.opacity = '0.5';
+            insightCard.style.transition = 'opacity 0.3s ease';
+            
+            setTimeout(() => {
+                insightCard.style.opacity = '1';
+                // Trigger a "refresh" animation effect
+                insightCard.classList.remove('ai-insight-glow');
+                void insightCard.offsetWidth; // Trigger reflow
+                insightCard.classList.add('ai-insight-glow');
+            }, 600);
+        });
+
+        // Hover effect for table rows
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(4px)';
+                row.style.transition = 'transform 0.2s ease-out';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0)';
+            });
+        });
+    </script>
+{% endblock %}

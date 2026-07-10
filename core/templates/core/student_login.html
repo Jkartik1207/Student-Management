@@ -1,0 +1,79 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<!-- Login Form -->
+<section class="flex-1 flex items-center justify-center p-md relative overflow-hidden bg-background">
+<div class="w-full max-w-md bg-white border border-outline-variant shadow-xl rounded-2xl overflow-hidden relative z-10 p-xl">
+<div class="text-center mb-xl">
+<div class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center mx-auto mb-md shadow-lg">
+<span class="material-symbols-outlined text-3xl">school</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary mb-xs">Welcome Back</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Log in to the Student ERP Portal</p>
+</div>
+
+{% if messages %}
+<div class="mb-md">
+    {% for message in messages %}
+    <div class="p-sm text-sm rounded-lg {% if message.tags == 'error' %}bg-error-container text-on-error-container{% else %}bg-green-100 text-green-800{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<form class="space-y-lg" id="loginForm" method="POST">
+{% csrf_token %}
+<div class="space-y-md">
+<div class="space-y-sm">
+<label class="block font-label-md text-label-md text-primary" for="username">Username</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-body-lg">badge</span>
+<input class="w-full pl-[48px] pr-md py-md bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-on-surface placeholder:text-outline transition-all duration-200" id="username" name="username" placeholder="johndoe" required="" type="text"/>
+</div>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between items-center">
+<label class="block font-label-md text-label-md text-primary" for="password">Password</label>
+<a class="font-label-sm text-label-sm text-secondary hover:underline transition-all" href="#">Forgot password?</a>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-body-lg">lock</span>
+<input class="w-full pl-[48px] pr-md py-md bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-on-surface placeholder:text-outline transition-all duration-200" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<input class="w-4 h-4 rounded border-outline-variant text-secondary focus:ring-secondary" id="remember" type="checkbox"/>
+<label class="font-body-sm text-body-sm text-on-surface-variant select-none" for="remember">Remember this device for 30 days</label>
+</div>
+<div class="pt-sm space-y-md">
+<button class="w-full bg-primary text-white font-label-md text-label-md py-md rounded-lg hover:bg-primary-container transition-all duration-300 transform active:scale-[0.98] shadow-md hover:shadow-lg flex items-center justify-center gap-sm" type="submit">
+<span>Sign In</span>
+<span class="material-symbols-outlined text-body-lg">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Footer Links -->
+<footer class="text-center pt-xl space-y-md">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+    Don't have a student account? 
+    <a class="text-secondary font-label-md text-label-md hover:underline ml-xs" href="{% url 'student_signup' %}">Register here</a>
+</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-sm">
+    <a class="text-primary font-label-md text-label-md hover:underline" href="{% url 'login' %}">Faculty Login</a>
+</p>
+<div class="flex items-center justify-center gap-md border-t border-outline-variant/30 pt-lg">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary" href="#">Privacy Policy</a>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary" href="#">System Status</a>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary" href="#">IT Support</a>
+</div>
+</footer>
+</div>
+<!-- Subtle AI Decoration -->
+<div class="absolute bottom-md right-md opacity-20 pointer-events-none">
+<span class="material-symbols-outlined text-[120px] text-primary" style="font-variation-settings: 'FILL' 0;">auto_awesome</span>
+</div>
+</section>
+{% endblock %}

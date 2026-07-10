@@ -1,0 +1,263 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<!-- Content Canvas -->
+<div class="p-lg lg:p-2xl flex-1 max-w-7xl mx-auto w-full">
+<div class="mb-xl">
+<nav class="flex items-center gap-sm text-on-surface-variant mb-sm">
+<span class="font-label-sm text-label-sm">COMMUNICATION</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="font-label-sm text-label-sm text-primary">PARENT EMAIL MODULE</span>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-primary">Parent Outreach Center</h1>
+<p class="text-on-surface-variant mt-xs">Compose and send automated academic updates powered by Gemini AI.</p>
+</div>
+<!-- Main Bento Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+<!-- Left Column: Controls (4 cols) -->
+<div class="lg:col-span-4 space-y-lg">
+<!-- Step 1: Student Selection -->
+<div class="bento-cell p-lg rounded-xl">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">01</div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Select Student</h3>
+</div>
+<div class="space-y-md">
+<form method="POST" id="comm-form">
+{% csrf_token %}
+<div class="relative">
+<select name="student_id" class="w-full appearance-none bg-surface border border-outline-variant rounded-lg p-md pr-xl font-body-md text-on-surface cursor-pointer" id="student-select" required>
+<option disabled="" {% if not draft %}selected{% endif %} value="">Search Student...</option>
+{% for s in students %}
+<option value="{{ s.id }}">{{ s.name }} (ID: {{ s.roll_number }})</option>
+{% endfor %}
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+<!-- Attendance Preview Card -->
+<div class="hidden bg-surface-container-low rounded-lg p-md border border-outline-variant/30 fade-in" id="attendance-summary">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-sm">ATTENDANCE DATA</p>
+<div class="grid grid-cols-3 gap-sm">
+<div class="text-center">
+<p class="text-xs text-on-surface-variant">Rate</p>
+<p class="font-bold text-primary" id="stat-rate">-</p>
+</div>
+<div class="text-center border-x border-outline-variant/30">
+<p class="text-xs text-on-surface-variant">Absences</p>
+<p class="font-bold text-primary" id="stat-absences">-</p>
+</div>
+<div class="text-center">
+<p class="text-xs text-on-surface-variant">Tardies</p>
+<p class="font-bold text-primary" id="stat-tardies">-</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 2: Tone Selection -->
+<div class="bento-cell p-lg rounded-xl">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">02</div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Email Tone</h3>
+</div>
+<div class="grid grid-cols-1 gap-sm">
+<label class="relative flex items-center p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container transition-all group has-[:checked]:border-secondary has-[:checked]:bg-secondary-container/5">
+<input checked="" class="w-4 h-4 text-secondary focus:ring-secondary mr-md" name="tone" type="radio" value="Encouraging"/>
+<div>
+<p class="font-label-md text-label-md text-primary">Encouraging</p>
+<p class="text-xs text-on-surface-variant">Celebrate progress and potential.</p>
+</div>
+</label>
+<label class="relative flex items-center p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container transition-all group has-[:checked]:border-secondary has-[:checked]:bg-secondary-container/5">
+<input class="w-4 h-4 text-secondary focus:ring-secondary mr-md" name="tone" type="radio" value="Neutral"/>
+<div>
+<p class="font-label-md text-label-md text-primary">Neutral</p>
+<p class="text-xs text-on-surface-variant">Routine administrative update.</p>
+</div>
+</label>
+<label class="relative flex items-center p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container transition-all group has-[:checked]:border-secondary has-[:checked]:bg-secondary-container/5">
+<input class="w-4 h-4 text-secondary focus:ring-secondary mr-md" name="tone" type="radio" value="Concerned"/>
+<div>
+<p class="font-label-md text-label-md text-primary">Concerned</p>
+<p class="text-xs text-on-surface-variant">Address specific behavioral or academic issues.</p>
+</div>
+</label>
+</div>
+</div>
+<!-- AI Trigger -->
+<button type="submit" class="w-full bg-secondary text-on-secondary py-md rounded-xl font-bold flex items-center justify-center gap-sm shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed" id="generate-btn">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">spark</span>
+                        AI Draft Email
+                    </button>
+</form>
+</div>
+<!-- Right Column: Editor (8 cols) -->
+<div class="lg:col-span-8">
+<div class="bento-cell rounded-xl overflow-hidden flex flex-col h-full min-h-[600px]">
+<!-- Editor Header -->
+<div class="bg-surface-container-low p-md border-b border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant">edit_note</span>
+<span class="font-label-md text-label-md text-primary">DRAFT EDITOR</span>
+</div>
+<div class="flex gap-sm">
+<button class="p-xs text-on-surface-variant hover:bg-outline-variant/20 rounded">
+<span class="material-symbols-outlined text-[20px]">format_bold</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:bg-outline-variant/20 rounded">
+<span class="material-symbols-outlined text-[20px]">format_italic</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:bg-outline-variant/20 rounded">
+<span class="material-symbols-outlined text-[20px]">link</span>
+</button>
+<div class="w-px h-6 bg-outline-variant mx-xs"></div>
+<button class="p-xs text-on-surface-variant hover:bg-outline-variant/20 rounded">
+<span class="material-symbols-outlined text-[20px]">undo</span>
+</button>
+</div>
+</div>
+<!-- Email Meta Fields -->
+<div class="p-lg border-b border-outline-variant/50 space-y-sm bg-white/50">
+<div class="flex items-center gap-md">
+<span class="w-12 text-on-surface-variant text-sm">To:</span>
+<input class="flex-1 bg-transparent border-none p-0 text-sm focus:ring-0 font-medium" id="email-to" type="text" value="parent_contact@example.edu"/>
+</div>
+<div class="flex items-center gap-md">
+<span class="w-12 text-on-surface-variant text-sm">Subject:</span>
+<input class="flex-1 bg-transparent border-none p-0 text-sm focus:ring-0 font-medium" id="email-subject" placeholder="Subject will be generated..." type="text"/>
+</div>
+</div>
+<!-- Main Text Area -->
+<div class="flex-1 relative p-lg">
+<textarea name="draft_content" class="w-full h-full min-h-[400px] border-none focus:ring-0 p-0 text-body-md resize-none leading-relaxed" id="email-body" placeholder="Select a student and click 'AI Draft Email' to begin...">{{ draft|default:"" }}</textarea>
+</div>
+<!-- AI Insight Container -->
+<div class="mx-lg mb-lg p-md ai-insight-card rounded-lg flex items-start gap-md">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div>
+<p class="text-xs font-bold text-secondary uppercase tracking-wider">AI Recommendation</p>
+<p class="text-sm text-on-surface mt-1" id="ai-suggestion-text">Select a student to see data-driven insights here.</p>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="p-lg bg-surface-container-low border-t border-outline-variant flex justify-end gap-md">
+<button class="px-xl py-md text-on-surface-variant font-label-md text-label-md hover:bg-outline-variant/20 rounded-lg transition-all">
+                                Save Draft
+                            </button>
+<button type="submit" form="comm-form" name="send" value="1" class="bg-primary text-on-primary px-xl py-md rounded-lg font-bold flex items-center gap-sm shadow-lg hover:opacity-95 transition-all disabled:opacity-50" id="send-btn">
+<span class="material-symbols-outlined">send</span>
+                                Send Email
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-xl mt-2xl gap-md border-t border-outline-variant bg-surface">
+<div class="flex flex-col items-center md:items-start gap-xs">
+<p class="font-label-md text-label-md font-bold text-primary">Academia AI</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 Institute of Computational Intelligence. Powered by Gemini.</p>
+</div>
+<div class="flex gap-lg">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Faculty Support</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Emergency Contacts</a>
+</div>
+</footer>
+
+<script>
+
+        const studentSelect = document.getElementById('student-select');
+        const attendanceSummary = document.getElementById('attendance-summary');
+        const statRate = document.getElementById('stat-rate');
+        const statAbsences = document.getElementById('stat-absences');
+        const statTardies = document.getElementById('stat-tardies');
+        const generateBtn = document.getElementById('generate-btn');
+        const emailBody = document.getElementById('email-body');
+        const emailSubject = document.getElementById('email-subject');
+        const aiLoading = document.getElementById('ai-loading');
+        const aiSuggestionText = document.getElementById('ai-suggestion-text');
+
+        // Student Data Mapping
+        studentSelect.addEventListener('change', (e) => {
+            const selectedOption = e.target.options[e.target.selectedIndex];
+            const data = {
+                rate: selectedOption.getAttribute('data-attendance'),
+                absences: selectedOption.getAttribute('data-absences'),
+                tardies: selectedOption.getAttribute('data-tardies'),
+                name: selectedOption.text
+            };
+
+            attendanceSummary.classList.remove('hidden');
+            statRate.innerText = data.rate;
+            statAbsences.innerText = data.absences;
+            statTardies.innerText = data.tardies;
+
+            if (parseInt(data.absences) > 10) {
+                aiSuggestionText.innerText = `Alert: ${data.name} has exceeded the standard absence threshold. I recommend using a "Concerned" tone to schedule a parent-teacher conference.`;
+            } else if (parseFloat(data.rate) > 95) {
+                aiSuggestionText.innerText = `${data.name} has exemplary attendance. An "Encouraging" tone would be perfect to acknowledge their commitment.`;
+            } else {
+                aiSuggestionText.innerText = `${data.name}'s performance is stable. A "Neutral" tone is appropriate for standard status updates.`;
+            }
+        });
+
+        // AI Generation Mockup
+        generateBtn.addEventListener('click', () => {
+            if (!studentSelect.value) {
+                alert('Please select a student first.');
+                return;
+            }
+
+            const tone = document.querySelector('input[name="tone"]:checked').value;
+            const studentName = studentSelect.options[studentSelect.selectedIndex].text;
+            const rate = statRate.innerText;
+            const absences = statAbsences.innerText;
+
+            aiLoading.classList.remove('hidden');
+
+            // Artificial Delay
+            setTimeout(() => {
+                aiLoading.classList.add('hidden');
+                
+                let subject = "";
+                let body = "";
+
+                if (tone === "Encouraging") {
+                    subject = `Academic Excellence Update: ${studentName}`;
+                    body = `Dear Parent/Guardian,\n\nI am writing to share some positive news regarding ${studentName}'s progress this semester. Their dedication to the coursework has been truly impressive.\n\nNotably, ${studentName} maintains an exceptional attendance record of ${rate}, with only ${absences} absences to date. This consistency is clearly reflected in their academic performance and classroom participation.\n\nKeep up the great work!\n\nBest regards,\n[Faculty Name]`;
+                } else if (tone === "Concerned") {
+                    subject = `Important: Academic & Attendance Discussion for ${studentName}`;
+                    body = `Dear Parent/Guardian,\n\nI am reaching out to discuss some concerns regarding ${studentName}'s recent engagement and attendance. \n\nOur records indicate an attendance rate of ${rate}, with ${absences} recorded absences. Regular attendance is critical for success in this course, and I have noticed a direct impact on ${studentName}'s ability to keep up with current assignments.\n\nI would like to schedule a brief call to discuss how we can best support ${studentName} moving forward.\n\nSincerely,\n[Faculty Name]`;
+                } else {
+                    subject = `Monthly Academic Progress Report: ${studentName}`;
+                    body = `Dear Parent/Guardian,\n\nPlease find the monthly progress update for ${studentName} below.\n\nAttendance Overview:\n- Rate: ${rate}\n- Total Absences: ${absences}\n\n${studentName} is currently meeting the basic requirements of the curriculum. We will continue to monitor their progress and provide updates as necessary.\n\nRegards,\n[Faculty Name]`;
+                }
+
+                emailSubject.value = subject;
+                emailBody.value = body;
+            }, 1500);
+        });
+
+        // Send Interaction
+        document.getElementById('send-btn').addEventListener('click', () => {
+            const btn = document.getElementById('send-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> Sending...`;
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.innerHTML = `<span class="material-symbols-outlined">check_circle</span> Sent!`;
+                btn.classList.replace('bg-primary', 'bg-green-600');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.replace('bg-green-600', 'bg-primary');
+                    btn.disabled = false;
+                }, 2000);
+            }, 1200);
+        });
+    
+</script>
+{% endblock %}

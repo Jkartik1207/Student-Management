@@ -1,0 +1,98 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<section class="flex-1 flex items-center justify-center p-md relative overflow-hidden bg-background">
+<div class="w-full max-w-md bg-white border border-outline-variant shadow-xl rounded-2xl overflow-hidden relative z-10 p-xl">
+<div class="text-center mb-xl">
+<div class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center mx-auto mb-md shadow-lg">
+<span class="material-symbols-outlined text-3xl">school</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary mb-xs">Create an Account</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Join the Faculty ERP Portal</p>
+</div>
+
+{% if messages %}
+<div class="mb-md">
+    {% for message in messages %}
+    <div class="p-sm text-sm rounded-lg {% if message.tags == 'error' %}bg-error-container text-on-error-container{% else %}bg-green-100 text-green-800{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<form class="space-y-lg" method="POST">
+{% csrf_token %}
+<div class="space-y-md">
+<div class="space-y-sm">
+<label class="block font-label-md text-label-md text-primary" for="name">Full Name</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-body-lg">person</span>
+<input class="w-full pl-[48px] pr-md py-md bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-on-surface placeholder:text-outline transition-all duration-200" id="name" name="name" placeholder="John Doe" required="" type="text"/>
+</div>
+</div>
+
+<div class="space-y-sm">
+<label class="block font-label-md text-label-md text-primary" for="username">Username</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-body-lg">badge</span>
+<input class="w-full pl-[48px] pr-md py-md bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-on-surface placeholder:text-outline transition-all duration-200" id="username" name="username" placeholder="johndoe" required="" type="text"/>
+</div>
+</div>
+
+<div class="space-y-sm">
+<label class="block font-label-md text-label-md text-primary" for="email">University Email</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-body-lg">mail</span>
+<input class="w-full pl-[48px] pr-md py-md bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-on-surface placeholder:text-outline transition-all duration-200" id="email" name="email" placeholder="name@university.edu" required="" type="email"/>
+</div>
+</div>
+
+<div class="space-y-sm">
+<label class="block font-label-md text-label-md text-primary" for="department">Department</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-body-lg">domain</span>
+<input class="w-full pl-[48px] pr-md py-md bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-on-surface placeholder:text-outline transition-all duration-200" id="department" name="department" placeholder="Computer Science" required="" type="text"/>
+</div>
+</div>
+
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-sm">
+<label class="block font-label-md text-label-md text-primary" for="password">Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-body-lg">lock</span>
+<input class="w-full pl-[48px] pr-md py-md bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-on-surface placeholder:text-outline transition-all duration-200" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+
+<div class="space-y-sm">
+<label class="block font-label-md text-label-md text-primary" for="confirm_password">Confirm Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-body-lg">lock</span>
+<input class="w-full pl-[48px] pr-md py-md bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-on-surface placeholder:text-outline transition-all duration-200" id="confirm_password" name="confirm_password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+</div>
+</div>
+
+<div class="pt-sm space-y-md">
+<button class="w-full bg-primary text-white font-label-md text-label-md py-md rounded-lg hover:bg-primary-container transition-all duration-300 transform active:scale-[0.98] shadow-md hover:shadow-lg flex items-center justify-center gap-sm" type="submit">
+<span>Sign Up</span>
+<span class="material-symbols-outlined text-body-lg">arrow_forward</span>
+</button>
+</div>
+</form>
+
+<footer class="text-center pt-xl space-y-md">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+    Already have an account? 
+    <a class="text-secondary font-label-md text-label-md hover:underline ml-xs" href="{% url 'login' %}">Log in</a>
+</p>
+</footer>
+</div>
+
+<div class="absolute bottom-md right-md opacity-20 pointer-events-none">
+<span class="material-symbols-outlined text-[120px] text-primary" style="font-variation-settings: 'FILL' 0;">auto_awesome</span>
+</div>
+</section>
+{% endblock %}
