@@ -22,5 +22,6 @@ urlpatterns = [
     path('student/dashboard/', views.student_dashboard, name='student_dashboard'),
     path('student/assignments/', views.student_assignments, name='student_assignments'),
     path('student/report/', views.student_report, name='student_report'),
+    path('api/ai-chat/', views.ai_chat_api, name='ai_chat_api'),
     path('', views.dashboard_view, name='home'),
 ]

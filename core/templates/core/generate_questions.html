@@ -10,7 +10,7 @@
 <form method="POST" id="generate-form" class="grid grid-cols-1 lg:grid-cols-3 gap-lg mb-2xl" onsubmit="showLoading()">
 {% csrf_token %}
 <div class="lg:col-span-2 bg-white p-lg rounded-xl border border-outline-variant shadow-sm">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
 <div class="flex flex-col gap-sm">
 <label class="font-label-md text-primary">Subject</label>
 <input name="subject" class="w-full rounded-lg border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all font-body-md py-md" id="subject-input" placeholder="e.g. Quantum Physics" type="text" required/>
@@ -18,6 +18,10 @@
 <div class="flex flex-col gap-sm">
 <label class="font-label-md text-primary">Topic</label>
 <input name="topic" class="w-full rounded-lg border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all font-body-md py-md" id="topic-input" placeholder="e.g. Schrodinger Equation" type="text" required/>
+</div>
+<div class="flex flex-col gap-sm">
+<label class="font-label-md text-primary">Total Marks</label>
+<input name="marks" class="w-full rounded-lg border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all font-body-md py-md" id="marks-input" placeholder="e.g. 50" type="number" required/>
 </div>
 </div>
 <div class="mt-lg">
@@ -73,13 +77,13 @@
 <p class="font-label-md text-on-surface-variant mb-lg" id="paper-topic">UNIT ASSESSMENT: {{ topic|default:"SCHRODINGER EQUATION"|upper }} ({{ difficulty|default:"Medium" }})</p>
 <div class="flex justify-center gap-xl text-body-sm text-on-surface-variant border-t border-outline-variant/30 pt-md">
 <span class="flex items-center gap-xs"><span class="font-semibold text-primary">Time:</span> 60 Minutes</span>
-<span class="flex items-center gap-xs"><span class="font-semibold text-primary">Max Marks:</span> 50</span>
+<span class="flex items-center gap-xs"><span class="font-semibold text-primary">Max Marks:</span> {{ marks|default:"50" }}</span>
 <span class="flex items-center gap-xs"><span class="font-semibold text-primary">Questions:</span> 05</span>
 </div>
 </div>
 <!-- Questions List -->
 <div class="p-xl md:p-2xl space-y-xl">
-<div class="p-xl bg-white space-y-lg whitespace-pre-wrap font-body-md text-on-surface">
+<div class="p-xl bg-white space-y-lg font-body-md text-on-surface">
 {{ generated_text|safe }}
 </div>
 </div>

@@ -1,79 +1,102 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<!-- Login Form -->
-<section class="flex-1 flex items-center justify-center p-md relative overflow-hidden bg-background">
-<div class="w-full max-w-md bg-white border border-outline-variant shadow-xl rounded-2xl overflow-hidden relative z-10 p-xl">
-<div class="text-center mb-xl">
-<div class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center mx-auto mb-md shadow-lg">
-<span class="material-symbols-outlined text-3xl">school</span>
-</div>
-<h1 class="font-headline-md text-headline-md text-primary mb-xs">Welcome Back</h1>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Sign in to the Faculty ERP Portal</p>
-</div>
-
-{% if messages %}
-<div class="mb-md">
-    {% for message in messages %}
-    <div class="p-sm text-sm rounded-lg {% if message.tags == 'error' %}bg-error-container text-on-error-container{% else %}bg-green-100 text-green-800{% endif %}">
-        {{ message }}
+<section class="min-h-screen w-full flex bg-background">
+    <!-- Left Hero Image (Hidden on mobile) -->
+    <div class="hidden lg:flex w-1/2 relative bg-surface-container-lowest overflow-hidden items-center justify-center">
+        <!-- Background Image -->
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');"></div>
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary/70 to-secondary/80 backdrop-blur-[2px]"></div>
+        
+        <!-- Motivational Text -->
+        <div class="relative z-10 p-2xl max-w-lg text-white">
+            <div class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mb-lg shadow-lg border border-white/20">
+                <span class="material-symbols-outlined text-4xl text-white">school</span>
+            </div>
+            <h1 class="font-headline-xl text-5xl font-bold mb-md leading-tight">Empowering Academic Excellence</h1>
+            <p class="font-body-lg text-lg text-white/80 leading-relaxed">
+                Welcome to the Faculty ERP Portal. Manage attendance, generate AI-driven assessments, and streamline your computational workflows in one unified platform.
+            </p>
+            <div class="mt-xl flex gap-sm items-center text-white/60 font-label-md">
+                <span class="material-symbols-outlined text-sm">verified</span>
+                <span>Secure Faculty Access</span>
+            </div>
+        </div>
     </div>
-    {% endfor %}
-</div>
-{% endif %}
 
-<form class="space-y-lg" id="loginForm" method="POST">
-{% csrf_token %}
-<div class="space-y-md">
-<div class="space-y-sm">
-<label class="block font-label-md text-label-md text-primary" for="username">Username</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-body-lg">badge</span>
-<input class="w-full pl-[48px] pr-md py-md bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-on-surface placeholder:text-outline transition-all duration-200" id="username" name="username" placeholder="johndoe" required="" type="text"/>
-</div>
-</div>
-<div class="space-y-sm">
-<div class="flex justify-between items-center">
-<label class="block font-label-md text-label-md text-primary" for="password">Password</label>
-<a class="font-label-sm text-label-sm text-secondary hover:underline transition-all" href="#">Forgot password?</a>
-</div>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-body-lg">lock</span>
-<input class="w-full pl-[48px] pr-md py-md bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-on-surface placeholder:text-outline transition-all duration-200" id="password" name="password" placeholder="••••••••" required="" type="password"/>
-</div>
-</div>
-</div>
-<div class="flex items-center gap-sm">
-<input class="w-4 h-4 rounded border-outline-variant text-secondary focus:ring-secondary" id="remember" type="checkbox"/>
-<label class="font-body-sm text-body-sm text-on-surface-variant select-none" for="remember">Remember this device for 30 days</label>
-</div>
-<div class="pt-sm space-y-md">
-<button class="w-full bg-primary text-white font-label-md text-label-md py-md rounded-lg hover:bg-primary-container transition-all duration-300 transform active:scale-[0.98] shadow-md hover:shadow-lg flex items-center justify-center gap-sm" type="submit">
-<span>Sign In to Portal</span>
-<span class="material-symbols-outlined text-body-lg">arrow_forward</span>
-</button>
-</div>
-</form>
-<!-- Footer Links -->
-<footer class="text-center pt-xl space-y-md">
-<p class="font-body-sm text-body-sm text-on-surface-variant">
-                        New to the institution? 
-                        <a class="text-secondary font-label-md text-label-md hover:underline ml-xs" href="{% url 'signup' %}">Request access</a>
-</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-sm">
-    <a class="text-primary font-label-md text-label-md hover:underline" href="{% url 'student_login' %}">Student Login</a>
-</p>
-<div class="flex items-center justify-center gap-md border-t border-outline-variant/30 pt-lg">
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary" href="#">Privacy Policy</a>
-<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary" href="#">System Status</a>
-<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary" href="#">IT Support</a>
-</div>
-</footer>
-</div>
-<!-- Subtle AI Decoration -->
-<div class="absolute bottom-md right-md opacity-20 pointer-events-none">
-<span class="material-symbols-outlined text-[120px] text-primary" style="font-variation-settings: 'FILL' 0;">auto_awesome</span>
-</div>
+    <!-- Right Login Form -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-xl relative">
+        <!-- Ambient Mesh Gradients for Right Side -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="w-full max-w-md relative z-10">
+            <div class="text-center lg:text-left mb-xl">
+                <h2 class="font-headline-lg text-4xl font-bold text-primary mb-sm">Welcome Back</h2>
+                <p class="font-body-md text-on-surface-variant">Sign in to your Faculty account</p>
+            </div>
+
+            {% if messages %}
+            <div class="mb-lg space-y-sm">
+                {% for message in messages %}
+                <div class="p-md text-sm rounded-xl flex items-center gap-sm {% if message.tags == 'error' %}bg-error-container/50 text-error border border-error/20{% else %}bg-green-50 text-green-700 border border-green-200{% endif %}">
+                    <span class="material-symbols-outlined text-[18px]">{% if message.tags == 'error' %}error{% else %}check_circle{% endif %}</span>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form class="space-y-lg" id="loginForm" method="POST">
+                {% csrf_token %}
+                <div class="space-y-md">
+                    <div class="space-y-sm group">
+                        <label class="block font-label-md text-primary transition-colors group-focus-within:text-secondary" for="username">Username</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-body-lg transition-colors group-focus-within:text-secondary">badge</span>
+                            <input class="w-full pl-[48px] pr-md py-md bg-surface-container-lowest border-2 border-outline-variant/50 hover:border-outline-variant rounded-xl font-body-md text-on-surface placeholder:text-outline transition-all duration-300 focus:border-secondary focus:ring-4 focus:ring-secondary/10 outline-none" id="username" name="username" placeholder="johndoe" required="" type="text"/>
+                        </div>
+                    </div>
+
+                    <div class="space-y-sm group">
+                        <div class="flex justify-between items-center">
+                            <label class="block font-label-md text-primary transition-colors group-focus-within:text-secondary" for="password">Password</label>
+                            <a class="font-label-sm text-secondary hover:text-primary hover:underline transition-all" href="#">Forgot password?</a>
+                        </div>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-body-lg transition-colors group-focus-within:text-secondary">lock</span>
+                            <input class="w-full pl-[48px] pr-md py-md bg-surface-container-lowest border-2 border-outline-variant/50 hover:border-outline-variant rounded-xl font-body-md text-on-surface placeholder:text-outline transition-all duration-300 focus:border-secondary focus:ring-4 focus:ring-secondary/10 outline-none" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-sm">
+                    <input class="w-5 h-5 rounded border-2 border-outline-variant text-secondary focus:ring-secondary/20 transition-all cursor-pointer" id="remember" type="checkbox"/>
+                    <label class="font-body-md text-on-surface-variant select-none cursor-pointer" for="remember">Remember this device for 30 days</label>
+                </div>
+
+                <div class="pt-sm">
+                    <button class="w-full bg-gradient-to-r from-primary to-secondary text-white font-label-lg py-4 rounded-xl hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-md group" type="submit">
+                        <span class="font-semibold tracking-wide">Sign In to Portal</span>
+                        <span class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Footer Links -->
+            <div class="mt-2xl text-center lg:text-left space-y-md">
+                <p class="font-body-md text-on-surface-variant">
+                    New to the institution? 
+                    <a class="text-secondary font-bold hover:underline ml-xs transition-all" href="{% url 'signup' %}">Request Faculty Access</a>
+                </p>
+                <div class="pt-lg border-t border-outline-variant/30">
+                    <a class="inline-flex items-center gap-xs px-md py-sm bg-surface-container-low hover:bg-surface-container rounded-lg text-primary font-label-md transition-all active:scale-95" href="{% url 'student_login' %}">
+                        <span class="material-symbols-outlined text-[18px]">person</span>
+                        Switch to Student Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 {% endblock %}

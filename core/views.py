@@ -11,6 +11,8 @@ from django.conf import settings
 from .models import Faculty, Student, Attendance, Marks, Assignment, AssignmentSubmission, Notification, ParentCommunication
 from django.contrib import messages
 import google.generativeai as genai
+from django.http import JsonResponse
+import json
 
 def generate_otp():
     return str(random.randint(100000, 999999))
@@ -203,9 +205,14 @@ def generate_questions(request):
         subject = request.POST.get('subject')
         topic = request.POST.get('topic')
         difficulty = request.POST.get('difficulty')
+        marks = request.POST.get('marks', '50')
         
-        prompt = f"Generate 5 {difficulty} questions about {topic} for the subject {subject}. Format the output strictly in HTML with <ol class='list-decimal pl-xl space-y-md'> and <li> tags for the questions. Do NOT wrap it in markdown code blocks."
-        
+        prompt = f"""Generate exactly 5 {difficulty} questions about {topic} for the subject {subject}. 
+The total marks for this assessment are {marks}. 
+CRITICAL INSTRUCTION: You must ONLY output raw HTML. Do NOT use markdown formatting (NO asterisks ** for bold, NO backticks ` for code). 
+Use standard HTML tags for all formatting: <strong> for bold, <code> for code snippets, <p> for paragraphs, and <br> for line breaks.
+Format the overall output strictly as an ordered list using <ol class="list-decimal pl-6 space-y-8 text-lg"> and <li class="pl-2"> tags.
+Each <li> should contain the question text appropriately formatted with HTML, followed by a <span class="block text-sm text-gray-500 mt-3 font-semibold"> (Marks: [X])</span> indicating the marks for that question."""
         api_key = os.environ.get('GEMINI_API_KEY')
         if not api_key:
             messages.error(request, "GEMINI_API_KEY environment variable is not set.")
@@ -229,7 +236,8 @@ def generate_questions(request):
         'generated_text': generated_text,
         'subject': request.POST.get('subject', '') if request.method == 'POST' else '',
         'topic': request.POST.get('topic', '') if request.method == 'POST' else '',
-        'difficulty': request.POST.get('difficulty', 'Medium') if request.method == 'POST' else 'Medium'
+        'difficulty': request.POST.get('difficulty', 'Medium') if request.method == 'POST' else 'Medium',
+        'marks': request.POST.get('marks', '50') if request.method == 'POST' else '50'
     })
 def get_gemini_response(prompt):
     api_key = os.environ.get('GEMINI_API_KEY')
@@ -339,8 +347,12 @@ def timetable_view(request):
     timetable = None
     if request.method == 'POST':
         constraints = request.POST.get('constraints')
-        prompt = f"Generate a 5-day academic timetable (Monday-Friday) in a markdown table based on these constraints: {constraints}"
+        prompt = f"Generate a 5-day academic timetable (Monday-Friday) based on these constraints: {constraints}. STRICTLY format the output as a clean HTML <table> with classes 'w-full text-left border-collapse'. Do NOT wrap it in markdown code blocks. Include headers for Monday to Friday."
         timetable = get_gemini_response(prompt)
+        if timetable.strip().startswith("```html"):
+            timetable = timetable.strip().removeprefix("```html")
+            if timetable.strip().endswith("```"):
+                timetable = timetable.strip().removesuffix("```")
     return render(request, 'core/timetable.html', {'timetable': timetable})
 
 @login_required
@@ -436,6 +448,23 @@ def accreditation_view(request):
         prompt = f"Draft an accreditation overview (NAAC/NBA style) for a department with {total_faculty} faculty members and {total_students} students. Mention our focus on AI-driven analytics."
         report = get_gemini_response(prompt)
     return render(request, 'core/accreditation.html', {'report': report})
+
+@login_required
+def ai_chat_api(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user_message = data.get('message', '')
+            if not user_message:
+                return JsonResponse({'error': 'Message is required'}, status=400)
+            
+            prompt = f"The user is asking a question in a faculty/student academic portal context: {user_message}\nProvide a concise and helpful response."
+            reply = get_gemini_response(prompt)
+            
+            return JsonResponse({'reply': reply})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @login_required
 def faculty_dashboard(request):
